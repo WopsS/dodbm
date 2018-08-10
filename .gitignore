@@ -1,0 +1,7 @@
+# Build
+build
+
+# Premake
+premake/projects
+premake/premake5
+premake/premake5.exe

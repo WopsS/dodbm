@@ -1,0 +1,35 @@
+compiler: g++-7
+dist: trusty
+language: cpp
+
+addons:
+  apt:
+    packages:
+      - g++-7-multilib
+      - linux-libc-dev:i386
+    sources:
+      - ubuntu-toolchain-r-test
+
+env:
+  global:
+    - BUILD_DIR=$TRAVIS_BUILD_DIR/build
+    - PREMAKE_DIR=$TRAVIS_BUILD_DIR/premake
+  matrix:
+    - CONFIGURATION=Debug
+    - CONFIGURATION=Release
+
+git:
+  depth: 1
+
+before_script:
+  - wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha12/premake-5.0.0-alpha12-linux.tar.gz
+  - tar xzf premake-*-linux.tar.gz -C ${PREMAKE_DIR}
+
+script:
+  - cd ${PREMAKE_DIR}
+  - chmod 755 ./generate_gmake_projects.sh
+  - ./generate_gmake_projects.sh
+  - cd projects
+  - make config=${CONFIGURATION,,} CXX=g++-7
+  - cd ${BUILD_DIR}/${CONFIGURATION,,}/bin
+  - ./tests

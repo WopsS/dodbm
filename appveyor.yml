@@ -1,0 +1,38 @@
+clone_depth: 1
+image: Visual Studio 2017
+version: '{branch}.{build}'
+
+build:
+  verbosity: minimal
+
+configuration:
+  - Debug
+  - Release
+
+environment:
+  bin_dir: $(APPVEYOR_BUILD_FOLDER)/build/$(configuration)/bin
+  premake_dir: $(APPVEYOR_BUILD_FOLDER)/premake
+
+platform:
+  - x64
+
+pull_requests:
+  do_not_increment_build_number: true
+
+install:
+  - git submodule update --init --recursive
+  - ps: appveyor DownloadFile https://github.com/premake/premake-core/releases/download/v5.0.0-alpha12/premake-5.0.0-alpha12-windows.zip
+  - ps: 7z e premake-*-windows.zip -o"$env:premake_dir"
+
+before_build:
+  - ps: cd $env:premake_dir
+  - ps: ./generate_vs_projects.bat
+
+test_script:
+  - ps: cd "$env:bin_dir"
+  - ps: ./tests.exe
+
+artifacts:
+  - path: build/$(configuration)/lib
+    name: dodbm
+    type: zip
