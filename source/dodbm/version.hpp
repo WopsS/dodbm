@@ -14,17 +14,17 @@ namespace dodbm
             return 100;
         }
 
-        constexpr uint8_t major()
+        constexpr uint8_t get_major()
         {
             return 0;
         }
 
-        constexpr uint8_t minor()
+        constexpr uint8_t get_minor()
         {
             return 1;
         }
 
-        constexpr uint8_t patch()
+        constexpr uint8_t get_patch()
         {
             return 0;
         }
