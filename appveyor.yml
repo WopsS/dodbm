@@ -30,7 +30,12 @@ before_build:
 
 test_script:
   - ps: cd "$env:bin_dir"
-  - ps: ./tests.exe
+  - ps: |
+      Get-ChildItem *-tests.exe | ForEach-Object
+      {
+        Write-Host $_.BaseName
+        Invoke-Expression $_.FullName
+      }
 
 artifacts:
   - path: build/$(configuration)/lib
