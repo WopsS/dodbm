@@ -32,8 +32,4 @@ script:
   - cd projects
   - make config=${CONFIGURATION,,} CXX=g++-7
   - cd ${BUILD_DIR}/${CONFIGURATION,,}/bin
-  - |
-    for file in *-tests do
-      echo $file
-      ./$file
-    done
+  - for f in *-tests; do echo $f; ./$f; done
