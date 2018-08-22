@@ -2,12 +2,14 @@ require("premake", ">=5.0.0-alpha12")
 include("version.lua")
 
 basepath = path.getdirectory(os.getcwd());
-buildpath = function(p)  p = p or "lib"; return path.join(basepath, "build", "%{cfg.buildcfg:lower()}", p).."/" end
-sourcepath = function(p) return path.join(basepath, "source", p) end
-dependenciespath = function(p) return path.join(basepath, "dependencies", p).."/" end
-testspath = function(p) return path.join(basepath, "tests", p).."/" end
+buildpath = function(...) return path.join(basepath, "build", "%{cfg.buildcfg:lower()}", ...) end
+dependenciespath = function(...) return path.join(basepath, "dependencies", ...) end
+providerspath = function(...) return path.join(basepath, "providers", ...) end
 
-Version:format(sourcepath("dodbm/version.hpp.in"))
+sourcepath = function(p) return path.join(p, "source") end
+testspath = function(p) return path.join(p, "tests") end
+
+Version:format(sourcepath(basepath), "dodbm", "version.hpp.in")
 
 workspace("dodbm")
     architecture("x86_64")
@@ -30,5 +32,8 @@ workspace("dodbm")
 
     filter({})
 
-    include(sourcepath())
-    include(testspath())
+    group("tests")
+        include(testspath(basepath))
+
+    group("")
+        include(sourcepath(basepath))

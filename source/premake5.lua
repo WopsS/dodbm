@@ -5,10 +5,8 @@ project("dodbm")
     pchsource("dodbm/dodbm.cpp")
 
     if buildpath ~= nil then
-        targetdir(buildpath())
+        targetdir(buildpath("libs"))
     end
-
-    filter({})
     
     includedirs({ "." })   
 

@@ -1,4 +1,4 @@
-project("tests")
+project("dodbm-tests")
     kind("ConsoleApp")
     language("C++")
     targetdir(buildpath("bin"))
@@ -6,8 +6,9 @@ project("tests")
     includedirs(
     {
         ".",
-        dependenciespath("catch2/single_include"),
-        sourcepath()
+        dependenciespath("catch2", "single_include"),
+        sourcepath(basepath),
+        testspath(basepath)
     })
 
     files({  "**.cpp", "**.hpp" })
