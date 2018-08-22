@@ -32,8 +32,12 @@ workspace("dodbm")
 
     filter({})
 
+    group("providers")
+        include(sourcepath(providerspath("mysql")))
+
     group("tests")
         include(testspath(basepath))
+        include(testspath(providerspath("mysql")))
 
     group("")
         include(sourcepath(basepath))
