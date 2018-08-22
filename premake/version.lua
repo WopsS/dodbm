@@ -4,9 +4,9 @@ Version.Major = 0
 Version.Minor = 1
 Version.Patch = 0
 
-function Version:format(inputFile)
+function Version:format(...)
+    local inputFile = path.join(...)
     local inFile = io.open(inputFile, "r")
-    print(inputFile)
 
     if not inFile then
         return nil
