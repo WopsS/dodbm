@@ -30,7 +30,7 @@ before_build:
 
 test_script:
   - ps: cd "$env:bin_dir"
-  - ps: |
+  - ps: >-
       Get-ChildItem *-tests.exe | ForEach-Object
       {
         Write-Host $_.BaseName
@@ -38,6 +38,6 @@ test_script:
       }
 
 artifacts:
-  - path: build/$(configuration)/lib
+  - path: build/$(configuration)/libs
     name: dodbm
     type: zip
