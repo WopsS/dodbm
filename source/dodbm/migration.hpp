@@ -1,6 +1,6 @@
 #pragma once
 
-#include <dodbm/builders/migration_builder.hpp>
+#include <dodbm/builders/migration.hpp>
 
 namespace dodbm
 {
