@@ -11,3 +11,5 @@ project("dodbm")
     includedirs({ "." })   
 
     files({  "**.cpp", "**.hpp" })
+
+    vpaths({ ["*"] = "dodbm/**.*" })

@@ -32,6 +32,8 @@ workspace("dodbm")
 
     filter({})
 
+    files({ "../.clang-format" })
+
     group("providers")
         include(sourcepath(providerspath("mysql")))
 

@@ -14,3 +14,5 @@ project("mysql-provider-tests")
 
     files({  "**.cpp", "**.hpp" })
     links({ "dodbm", "mysql-provider" })
+
+    vpaths({ ["*"] = "**.*" })

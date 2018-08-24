@@ -13,3 +13,5 @@ project("mysql-provider")
     })
 
     files({  "**.cpp", "**.hpp" })
+
+    vpaths({ ["*"] = "dodbm/mysql/**.*" })

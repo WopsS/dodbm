@@ -13,3 +13,5 @@ project("dodbm-tests")
 
     files({  "**.cpp", "**.hpp" })
     links({ "dodbm" })
+
+    vpaths({ ["*"] = "**.*" })
