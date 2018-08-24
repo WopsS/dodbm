@@ -1,7 +1,7 @@
 #include <dodbm/dodbm.hpp>
 #include <dodbm/migrations.hpp>
 
-dodbm::migrations::migrations(const providers::base_provider& provider)
+dodbm::migrations::migrations(const base_provider& provider)
     : m_provider(provider)
 {
 }
