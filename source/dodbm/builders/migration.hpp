@@ -15,10 +15,10 @@ namespace dodbm
             migration() = default;
             ~migration() = default;
 
-            create_table create_table(const std::string& name);
+            builders::create_table create_table(const std::string& name);
             void drop_table(const std::string& name);
-            alter_table alter_table(const std::string& name);
-            rename_table rename_table(const std::string& name);
+            builders::alter_table alter_table(const std::string& name);
+            builders::rename_table rename_table(const std::string& name);
 
         private:
 
