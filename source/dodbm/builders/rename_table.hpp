@@ -1,5 +1,6 @@
 #pragma once
 
+#include <dodbm/builders/operation.hpp>
 #include <dodbm/operations/rename_table.hpp>
 
 namespace dodbm

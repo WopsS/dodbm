@@ -1,7 +1,7 @@
-#include <dodbm/dodbm.hpp>
+#include <dodbm/stdafx.hpp>
 #include <dodbm/repository.hpp>
 
-dodbm::repository::repository(const base_provider& provider)
+dodbm::repository::repository(std::shared_ptr<base_provider> provider)
     : m_provider(provider)
 {
 }

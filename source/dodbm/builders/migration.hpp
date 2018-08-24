@@ -1,7 +1,5 @@
 #pragma once
 
-#include <dodbm/builders/operation.hpp>
-
 #include <dodbm/builders/alter_table.hpp>
 #include <dodbm/builders/create_table.hpp>
 #include <dodbm/builders/rename_table.hpp>

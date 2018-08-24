@@ -10,8 +10,6 @@ namespace dodbm
 
             base_operation() = default;
             virtual ~base_operation() = default;
-
-            virtual const std::string compile() const = 0;
         };
     }
 }

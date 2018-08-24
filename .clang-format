@@ -76,5 +76,5 @@ BraceWrapping:
     SplitEmptyNamespace: true
 
 IncludeCategories:
-   - Regex: 'dodbm.hpp'
+   - Regex: 'stdafx.hpp'
      Priority: -1

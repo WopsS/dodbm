@@ -1,8 +1,8 @@
-#include <dodbm/dodbm.hpp>
+#include <dodbm/stdafx.hpp>
 #include <dodbm/builders/migration.hpp>
 #include <dodbm/operations/drop_table.hpp>
 
-dodbm::builders::create_table dodbm::migration_builder::create_table(const std::string& name)
+dodbm::builders::create_table dodbm::builders::migration::create_table(const std::string& name)
 {
     if (name.empty())
     {
@@ -15,7 +15,7 @@ dodbm::builders::create_table dodbm::migration_builder::create_table(const std::
     return builders::create_table(ptr);
 }
 
-void dodbm::migration_builder::drop_table(const std::string& name)
+void dodbm::builders::migration::drop_table(const std::string& name)
 {
     if (name.empty())
     {
@@ -25,7 +25,7 @@ void dodbm::migration_builder::drop_table(const std::string& name)
     m_operations.emplace(new operations::drop_table(name));
 }
 
-dodbm::builders::alter_table dodbm::migration_builder::alter_table(const std::string& name)
+dodbm::builders::alter_table dodbm::builders::migration::alter_table(const std::string& name)
 {
     if (name.empty())
     {
@@ -38,7 +38,7 @@ dodbm::builders::alter_table dodbm::migration_builder::alter_table(const std::st
     return builders::alter_table(ptr);
 }
 
-dodbm::builders::rename_table dodbm::migration_builder::rename_table(const std::string& name)
+dodbm::builders::rename_table dodbm::builders::migration::rename_table(const std::string& name)
 {
     if (name.empty())
     {

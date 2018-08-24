@@ -1,14 +1,9 @@
-#include <dodbm/dodbm.hpp>
+#include <dodbm/stdafx.hpp>
 #include <dodbm/operations/create_table.hpp>
 
 dodbm::operations::create_table::create_table(const std::string& name)
     : m_name(name)
 {
-}
-
-const std::string dodbm::operations::create_table::compile() const
-{
-    return std::string();
 }
 
 void dodbm::operations::create_table::set_engine(const std::string& name)

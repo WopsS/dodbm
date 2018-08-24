@@ -1,4 +1,4 @@
-#include <dodbm/dodbm.hpp>
+#include <dodbm/stdafx.hpp>
 #include <dodbm/builders/create_table.hpp>
 
 const dodbm::builders::create_table& dodbm::builders::create_table::columns(std::function<void()> func) const

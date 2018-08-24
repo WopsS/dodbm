@@ -1,4 +1,4 @@
-#include <dodbm/dodbm.hpp>
+#include <dodbm/stdafx.hpp>
 #include <dodbm/builders/rename_table.hpp>
 
 void dodbm::builders::rename_table::to(const std::string& name) const

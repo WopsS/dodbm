@@ -1,5 +1,7 @@
 #pragma once
 
+#include <dodbm/operations/base_operation.hpp>
+
 namespace dodbm
 {
     namespace operations
@@ -10,8 +12,6 @@ namespace dodbm
 
             drop_table(const std::string& name);
             ~drop_table() = default;
-
-            const std::string compile() const final;
 
         private:
 

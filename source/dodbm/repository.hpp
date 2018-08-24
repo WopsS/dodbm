@@ -9,7 +9,7 @@ namespace dodbm
     {
     public:
 
-        repository(const base_provider& provider);
+        repository(std::shared_ptr<base_provider> provider);
         ~repository() = default;
 
         template<typename T>
@@ -23,7 +23,7 @@ namespace dodbm
 
     private:
 
-        base_provider m_provider;
+        std::shared_ptr<base_provider> m_provider;
 
         std::map<std::string, std::unique_ptr<migration>> m_migrations;
     };
