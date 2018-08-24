@@ -1,7 +1,7 @@
 #pragma once
 
-#include <dodbm/migrations/migration.hpp>
 #include <dodbm/base_provider.hpp>
+#include <dodbm/migration.hpp>
 
 namespace dodbm
 {
