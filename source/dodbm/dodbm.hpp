@@ -8,6 +8,6 @@
 #include <stdexcept>
 #include <typeinfo>
 
-#include <dodbm/migrations.hpp>
 #include <dodbm/exception.hpp>
+#include <dodbm/repository.hpp>
 #include <dodbm/version.hpp>
