@@ -2,6 +2,7 @@
 
 #include <dodbm/base_provider.hpp>
 #include <dodbm/migration.hpp>
+#include <dodbm/nameof.hpp>
 
 namespace dodbm
 {
@@ -15,8 +16,7 @@ namespace dodbm
         template<typename T>
         void add()
         {
-            // TODO: Remove typeid, get function name at compile time.
-            m_migrations.emplace(typeid(T).name(), new T());
+            m_migrations.emplace(dodbm::name_of<T>(), new T());
         }
 
         void run();
