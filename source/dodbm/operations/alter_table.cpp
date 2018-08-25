@@ -2,7 +2,8 @@
 #include <dodbm/operations/alter_table.hpp>
 
 dodbm::operations::alter_table::alter_table(const std::string& name)
-    : m_name(name)
+    : base_operation(operation_type::alter_table)
+    , m_name(name)
 {
 }
 

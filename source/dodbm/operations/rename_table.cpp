@@ -2,7 +2,8 @@
 #include <dodbm/operations/rename_table.hpp>
 
 dodbm::operations::rename_table::rename_table(const std::string& name)
-    : m_name(name)
+    : base_operation(operation_type::rename_table)
+    , m_name(name)
 {
 }
 

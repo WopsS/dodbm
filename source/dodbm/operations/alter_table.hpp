@@ -20,6 +20,7 @@ namespace dodbm
             void set_comment(const std::string& text);
 
         private:
+
             std::string m_name;
 
             std::string m_engine;

@@ -2,7 +2,8 @@
 #include <dodbm/operations/create_table.hpp>
 
 dodbm::operations::create_table::create_table(const std::string& name)
-    : m_name(name)
+    : base_operation(operation_type::create_table)
+    , m_name(name)
 {
 }
 
