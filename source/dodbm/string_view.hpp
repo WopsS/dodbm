@@ -33,12 +33,9 @@ namespace dodbm
 
         static_assert(std::is_same<CharT, typename Traits::char_type>::value, "Bad char_traits for basic_string_view");
 
-        using traits_type = Traits;
         using value_type = CharT;
-        using pointer = CharT*;
         using const_pointer = const CharT*;
         using const_iterator = const_pointer;
-        using const_reverse_iterator = std::reverse_iterator<const_iterator>;
         using size_type = std::size_t;
 
 #ifdef DODBM_CPP17_OR_GREATER
@@ -91,39 +88,6 @@ namespace dodbm
 
             _data += n;
             _size -= n;
-        }
-
-#ifdef DODBM_CPP14_OR_GREATER
-        constexpr
-#endif
-        void remove_suffix(size_type n)
-        {
-            assert(n <= length());
-
-            _size -= n;
-        }
-
-#ifdef DODBM_CPP14_OR_GREATER
-        constexpr
-#endif
-       int compare(basic_string_view v) const noexcept
-        {
-            auto result = Traits::compare(_data, v._data, std::min(_size, v._size));
-
-            if (result != 0)
-            {
-                return result;
-            }
-            else if (_size < v._size)
-            {
-                return -1;
-            }
-            else if (_size > v._size)
-            {
-                return 1;
-            }
-
-            return 0;
         }
 
         constexpr basic_string_view substr(size_type pos = 0, size_type count = npos) const
