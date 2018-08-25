@@ -7,6 +7,5 @@
 #include <queue>
 #include <stdexcept>
 #include <string>
-#include <typeinfo>
 
 #include <dodbm/exception.hpp>
