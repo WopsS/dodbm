@@ -1,5 +1,7 @@
 #pragma once
 
+#include <dodbm/sql_generator.hpp>
+
 namespace dodbm
 {
     class provider
@@ -8,5 +10,7 @@ namespace dodbm
 
         provider() = default;
         ~provider() = default;
+
+        virtual const sql_generator get_generator() const;
     };
 }
