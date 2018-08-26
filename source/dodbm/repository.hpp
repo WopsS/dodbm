@@ -39,6 +39,6 @@ namespace dodbm
 
         std::unique_ptr<provider> m_provider;
 
-        std::map<std::string, migration> m_migrations;
+        std::map<std::string, std::unique_ptr<migration>> m_migrations;
     };
 }
