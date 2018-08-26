@@ -4,13 +4,13 @@
 #include <string>
 
 #include <dodbm/mysql/config.hpp>
-#include <dodbm/base_provider.hpp>
+#include <dodbm/provider.hpp>
 
 namespace dodbm
 {
     namespace mysql
     {
-        class provider : public base_provider
+        class provider : public dodbm::provider
         {
         public:
 
