@@ -4,9 +4,9 @@
 #include <memory>
 #include <string>
 
-#include <dodbm/base_provider.hpp>
 #include <dodbm/migration.hpp>
 #include <dodbm/name_of.hpp>
+#include <dodbm/provider.hpp>
 
 namespace dodbm
 {
@@ -14,7 +14,7 @@ namespace dodbm
     {
     public:
 
-        repository(std::unique_ptr<base_provider> provider);
+        repository(std::unique_ptr<provider> provider);
         ~repository() = default;
 
         template<typename T>
@@ -37,7 +37,7 @@ namespace dodbm
 
         void rollback_to(const std::string& name);
 
-        std::unique_ptr<base_provider> m_provider;
+        std::unique_ptr<provider> m_provider;
 
         std::map<std::string, migration> m_migrations;
     };

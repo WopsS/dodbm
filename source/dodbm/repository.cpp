@@ -1,6 +1,6 @@
 #include <dodbm/repository.hpp>
 
-dodbm::repository::repository(std::unique_ptr<base_provider> provider)
+dodbm::repository::repository(std::unique_ptr<provider> provider)
     : m_provider(std::move(provider))
 {
 }
