@@ -2,7 +2,7 @@
 
 #include <dodbm/base_provider.hpp>
 #include <dodbm/migration.hpp>
-#include <dodbm/nameof.hpp>
+#include <dodbm/name_of.hpp>
 
 namespace dodbm
 {

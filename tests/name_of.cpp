@@ -1,6 +1,5 @@
 #include <catch2/catch.hpp>
-#include <iostream>
-#include <dodbm/nameof.hpp>
+#include <dodbm/name_of.hpp>
 
 class M1_GlobalNamespace
 {
@@ -36,7 +35,7 @@ namespace ns1
     }
 }
 
-TEST_CASE("nameof")
+TEST_CASE("name_of")
 {
     CHECK(dodbm::name_of<M1_GlobalNamespace>() == "M1_GlobalNamespace");
     CHECK(dodbm::name_of<M2_AnonymousNamespace>() == "M2_AnonymousNamespace");
