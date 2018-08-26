@@ -1,8 +1,5 @@
 #pragma once
 
-#include <functional>
-#include <string>
-
 #include <dodbm/mysql/config.hpp>
 #include <dodbm/provider.hpp>
 
