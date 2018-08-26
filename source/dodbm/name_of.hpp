@@ -9,19 +9,17 @@ namespace dodbm
     {
 #if defined(_MSC_VER)
         dodbm::string_view name(__FUNCSIG__);
-#elif defined(__clang__) || defined(__GNUC__)
-        dodbm::string_view name(__PRETTY_FUNCTION__);
-#else
-#error "Unsupported compiler"
-#endif
 
-#if defined(_MSC_VER)
         constexpr dodbm::string_view prefix("dodbm::name_of<class ");
         constexpr dodbm::string_view suffix(">(void)");
 #elif defined(__clang__)
+        dodbm::string_view name(__PRETTY_FUNCTION__);
+
         constexpr dodbm::string_view prefix("dodbm::name_of() [T = ");
         constexpr dodbm::string_view suffix("]");
 #elif defined(__GNUC__)
+        dodbm::string_view name(__PRETTY_FUNCTION__);
+
         constexpr dodbm::string_view prefix("dodbm::name_of() [with T = ");
         constexpr dodbm::string_view suffix("; ");
 #else
