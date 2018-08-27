@@ -1,4 +1,6 @@
 #include <dodbm/repository.hpp>
+
+#include <dodbm/command_executor.hpp>
 #include <dodbm/exception.hpp>
 
 dodbm::repository::repository(std::unique_ptr<provider> provider)
@@ -13,8 +15,9 @@ dodbm::repository::repository(std::unique_ptr<provider> provider)
 
 void dodbm::repository::migrate()
 {
+    auto connection = m_provider->get_connection();
     auto history = m_provider->get_history_repository();
-    auto last_migration = history.get_last_applied_migration();
+    auto last_migration = history.get_last_applied_migration(connection);
 
     auto begin = m_migrations.find(last_migration);
     if (begin == m_migrations.end())
@@ -42,19 +45,21 @@ void dodbm::repository::migrate()
         // TODO: Insert migration in history.
         //operations.emplace(history.get_insert_operation(name));
 
-        auto generator = m_provider->get_generator();
+        auto generator = m_provider->get_sql_generator();
         auto commands = generator.generate(operations);
 
-        m_provider->start_transaction();
+        connection->start_transaction();
 
         try
         {
-            m_provider->execute(std::move(commands));
-            m_provider->commit();
+            command_executor executor(connection);
+            executor.execute(std::move(commands));
+
+            connection->commit();
         }
         catch (dodbm::exception)
         {
-            m_provider->rollback();
+            connection->rollback();
             throw;
         }
     }
@@ -62,15 +67,17 @@ void dodbm::repository::migrate()
 
 void dodbm::repository::rollback_to(const std::string& name)
 {
+    auto connection = m_provider->get_connection();
     auto history = m_provider->get_history_repository();
-    auto last_migration = history.get_last_applied_migration();
+    auto last_migration = history.get_last_applied_migration(connection);
 
     auto rbegin = std::find_if(m_migrations.rbegin(), m_migrations.rend(), [&last_migration](const decltype(m_migrations)::value_type& it)
     {
         return it.first == last_migration;
     });
 
-    auto rend = std::find_if(m_migrations.rbegin(), m_migrations.rend(), [&name](const decltype(m_migrations)::value_type& it) {
+    auto rend = std::find_if(m_migrations.rbegin(), m_migrations.rend(), [&name](const decltype(m_migrations)::value_type& it)
+    {
         return it.first == name;
     });
 
@@ -89,19 +96,21 @@ void dodbm::repository::rollback_to(const std::string& name)
         // TODO: Remove migration from history.
         //operations.emplace(history.get_delete_operation(name));
 
-        auto generator = m_provider->get_generator();
+        auto generator = m_provider->get_sql_generator();
         auto commands = generator.generate(operations);
 
-        m_provider->start_transaction();
+        connection->start_transaction();
 
         try
         {
-            m_provider->execute(std::move(commands));
-            m_provider->commit();
+            command_executor executor(connection);
+            executor.execute(std::move(commands));
+
+            connection->commit();
         }
         catch (dodbm::exception ex)
         {
-            m_provider->rollback();
+            connection->rollback();
             throw;
         }
     }

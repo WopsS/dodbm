@@ -1,8 +1,5 @@
 #pragma once
 
-#include <queue>
-
-#include <dodbm/command.hpp>
 #include <dodbm/connection.hpp>
 #include <dodbm/history_repository.hpp>
 #include <dodbm/sql_generator.hpp>
@@ -16,19 +13,11 @@ namespace dodbm
         provider() = default;
         ~provider() = default;
 
-        virtual const sql_generator get_generator() const;
+        virtual connection* get_connection() const = 0;
 
         virtual const history_repository get_history_repository() const;
 
-        void execute(std::queue<command> commands);
-
-        // Transaction.
-        void start_transaction();
-        void commit();
-        void rollback();
-
-    protected:
-
-        virtual connection* get_connection() const = 0;
+        virtual const sql_generator get_sql_generator() const;
+        virtual const sql_generator_helper get_sql_generator_helper() const;
     };
 }

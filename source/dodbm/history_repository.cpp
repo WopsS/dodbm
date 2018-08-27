@@ -9,7 +9,7 @@ void dodbm::history_repository::create()
 {
 }
 
-const std::string dodbm::history_repository::get_last_applied_migration() const
+const std::string dodbm::history_repository::get_last_applied_migration(connection* connection) const
 {
     return std::string();
 }
