@@ -28,7 +28,7 @@ namespace dodbm
             template<typename T>
             const create_table& collation() const
             {
-                m_operation->set_collation(dodbm::collation(T::name, T::charset));
+                m_operation->set_collation(std::unique_ptr<dodbm::collation>(new dodbm::collation(T::name, T::charset)));
                 return *this;
             }
 

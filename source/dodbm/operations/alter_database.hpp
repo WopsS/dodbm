@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <dodbm/collation.hpp>
 #include <dodbm/operation.hpp>
 
@@ -18,14 +20,14 @@ namespace dodbm
 
             const std::string& get_name() const;
 
-            void set_collation(collation value);
+            void set_collation(std::unique_ptr<collation> value);
             const collation& get_collation() const;
 
         private:
 
             std::string m_name;
 
-            collation m_collation;
+            std::unique_ptr<collation> m_collation;
         };
     }
 }

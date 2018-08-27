@@ -15,12 +15,12 @@ const std::string& dodbm::operations::ensure_schema::get_name() const
     return m_name;
 }
 
-void dodbm::operations::ensure_schema::set_collation(collation value)
+void dodbm::operations::ensure_schema::set_collation(std::unique_ptr<collation> value)
 {
     m_collation = std::move(value);
 }
 
 const dodbm::collation& dodbm::operations::ensure_schema::get_collation() const
 {
-    return m_collation;
+    return *m_collation;
 }

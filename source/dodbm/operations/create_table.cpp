@@ -30,14 +30,14 @@ const dodbm::storage_engine& dodbm::operations::create_table::get_engine() const
     return *m_engine;
 }
 
-void dodbm::operations::create_table::set_collation(collation value)
+void dodbm::operations::create_table::set_collation(std::unique_ptr<collation> value)
 {
     m_collation = std::move(value);
 }
 
 const dodbm::collation& dodbm::operations::create_table::get_collation() const
 {
-    return m_collation;
+    return *m_collation;
 }
 
 void dodbm::operations::create_table::set_comment(const std::string& text)
