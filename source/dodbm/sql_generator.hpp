@@ -7,6 +7,8 @@
 #include <dodbm/operation.hpp>
 #include <dodbm/sql_generator_helper.hpp>
 
+#include <dodbm/operations/alter_database.hpp>
+
 #include <dodbm/operations/alter_table.hpp>
 #include <dodbm/operations/create_table.hpp>
 #include <dodbm/operations/drop_table.hpp>
@@ -25,6 +27,8 @@ namespace dodbm
         std::queue<command> generate(std::queue<std::shared_ptr<operation>> operations, const sql_generator_helper& helper);
 
     protected:
+
+        virtual command generate(const operations::alter_database& operation, const sql_generator_helper& helper);
 
         virtual command generate(const operations::alter_table& operation, const sql_generator_helper& helper);
         virtual command generate(const operations::create_table& operation, const sql_generator_helper& helper);

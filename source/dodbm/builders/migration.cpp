@@ -6,6 +6,14 @@ std::queue<std::shared_ptr<dodbm::operation>> dodbm::builders::migration::get_op
     return m_operations;
 }
 
+dodbm::builders::alter_database dodbm::builders::migration::alter_database(const std::string& name)
+{
+    std::shared_ptr<operations::alter_database> ptr(new operations::alter_database(name));
+    m_operations.emplace(ptr);
+
+    return builders::alter_database(ptr);
+}
+
 dodbm::builders::create_table dodbm::builders::migration::create_table(const std::string& name)
 {
     std::shared_ptr<operations::create_table> ptr(new operations::create_table(name));

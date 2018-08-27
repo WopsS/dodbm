@@ -10,6 +10,8 @@ namespace dodbm
 
         enum class type : uint8_t
         {
+            alter_database,
+
             alter_table,
             create_table,
             drop_table,

@@ -7,6 +7,11 @@ dodbm::command dodbm::sql_generator::generate(operation& operation, const sql_ge
 
     switch (operation.get_type())
     {
+        case type::alter_database:
+        {
+            auto& instance = *static_cast<operations::alter_database*>(&operation);
+            return generate(instance, helper);
+        }
         case type::alter_table:
         {
             auto& instance = *static_cast<operations::alter_table*>(&operation);
@@ -47,6 +52,20 @@ std::queue<dodbm::command> dodbm::sql_generator::generate(std::queue<std::shared
     }
 
     return commands;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::alter_database& operation, const sql_generator_helper& helper)
+{
+    const auto& collation = operation.get_collation();
+    const auto& charset = collation.get_charset();
+
+    command result;
+    result << "ALTER DATABASE "
+           << helper.delimit_identifier(operation.get_name())
+           << " DEFAULT CHARSET=" << charset
+           << " COLLATE=" << collation;
+
+    return result;
 }
 
 dodbm::command dodbm::sql_generator::generate(const operations::alter_table& operation, const sql_generator_helper& helper)
