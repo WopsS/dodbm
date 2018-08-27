@@ -11,9 +11,9 @@ namespace dodbm
         migration() = default;
         ~migration() = default;
 
-        std::queue<operation> get_up_operations();
+        std::queue<std::shared_ptr<operation>> get_up_operations();
 
-        std::queue<operation> get_down_operations();
+        std::queue<std::shared_ptr<operation>> get_down_operations();
 
     protected:
 

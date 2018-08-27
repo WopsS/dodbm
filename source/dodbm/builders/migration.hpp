@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <queue>
 
 #include <dodbm/operation.hpp>
@@ -15,11 +16,11 @@ namespace dodbm
             migration() = default;
             ~migration() = default;
 
-            std::queue<operation> get_operations() const;
+            std::queue<std::shared_ptr<dodbm::operation>> get_operations() const;
 
         private:
 
-            std::queue<operation> m_operations;
+            std::queue<std::shared_ptr<dodbm::operation>> m_operations;
         };
     }
 

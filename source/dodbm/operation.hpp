@@ -10,15 +10,15 @@ namespace dodbm
 
         enum class type : uint8_t
         {
+            alter_table,
+            create_table,
+            drop_table,
+            rename_table
         };
 
-        operation(type type);
+        operation() = default;
         virtual ~operation() = default;
 
-        const type get_type() const;
-
-    private:
-
-        type m_type;
+        virtual type get_type() const = 0;
     };
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <queue>
 
 #include <dodbm/command.hpp>
@@ -15,7 +16,7 @@ namespace dodbm
         sql_generator() = default;
         virtual ~sql_generator() = default;
 
-        std::queue<command> generate(std::queue<operation> operations);
+        std::queue<command> generate(std::queue<std::shared_ptr<operation>> operations);
 
     protected:
 
