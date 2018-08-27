@@ -42,6 +42,9 @@ void dodbm::repository::migrate()
         // TODO: Insert migration in history.
         //operations.emplace(history.get_insert_operation(name));
 
+        auto generator = m_provider->get_generator();
+        auto commands = generator.generate(operations);
+
         // TODO: Migrate.
     }
 }
@@ -74,6 +77,9 @@ void dodbm::repository::rollback_to(const std::string& name)
 
         // TODO: Remove migration from history.
         //operations.emplace(history.get_delete_operation(name));
+
+        auto generator = m_provider->get_generator();
+        auto commands = generator.generate(operations);
 
         // TODO: Rollback.
     }
