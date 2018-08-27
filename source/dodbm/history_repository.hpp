@@ -17,7 +17,7 @@ namespace dodbm
 
         const std::string get_last_applied_migration() const;
 
-        void insert_migration(const std::string& name);
-        void delete_migration(const std::string& name);
+        void get_insert_operation(const std::string& name);
+        void get_delete_operation(const std::string& name);
     };
 }
