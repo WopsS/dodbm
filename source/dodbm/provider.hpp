@@ -11,7 +11,7 @@ namespace dodbm
     public:
 
         provider() = default;
-        ~provider() = default;
+        virtual ~provider() = default;
 
         virtual connection* get_connection() const = 0;
 
