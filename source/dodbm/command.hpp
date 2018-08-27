@@ -13,6 +13,8 @@ namespace dodbm
 
         command& operator<<(const std::string& rhs);
 
+        virtual void execute_non_query() = 0;
+
     private:
 
         std::string m_text;

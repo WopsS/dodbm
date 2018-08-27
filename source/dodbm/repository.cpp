@@ -45,7 +45,18 @@ void dodbm::repository::migrate()
         auto generator = m_provider->get_generator();
         auto commands = generator.generate(operations);
 
-        // TODO: Migrate.
+        m_provider->start_transaction();
+
+        try
+        {
+            m_provider->execute(std::move(commands));
+            m_provider->commit();
+        }
+        catch (dodbm::exception)
+        {
+            m_provider->rollback();
+            throw;
+        }
     }
 }
 
@@ -81,6 +92,17 @@ void dodbm::repository::rollback_to(const std::string& name)
         auto generator = m_provider->get_generator();
         auto commands = generator.generate(operations);
 
-        // TODO: Rollback.
+        m_provider->start_transaction();
+
+        try
+        {
+            m_provider->execute(std::move(commands));
+            m_provider->commit();
+        }
+        catch (dodbm::exception ex)
+        {
+            m_provider->rollback();
+            throw;
+        }
     }
 }
