@@ -17,7 +17,8 @@ void dodbm::repository::migrate()
 {
     auto connection = m_provider->get_connection();
     auto history = m_provider->get_history_repository();
-    auto last_migration = history.get_last_applied_migration(connection);
+    auto helper = m_provider->get_sql_generator_helper();
+    auto last_migration = history.get_last_applied_migration(connection, helper);
 
     auto begin = m_migrations.find(last_migration);
     if (begin == m_migrations.end())
@@ -69,7 +70,8 @@ void dodbm::repository::rollback_to(const std::string& name)
 {
     auto connection = m_provider->get_connection();
     auto history = m_provider->get_history_repository();
-    auto last_migration = history.get_last_applied_migration(connection);
+    auto helper = m_provider->get_sql_generator_helper();
+    auto last_migration = history.get_last_applied_migration(connection, helper);
 
     auto rbegin = std::find_if(m_migrations.rbegin(), m_migrations.rend(), [&last_migration](const decltype(m_migrations)::value_type& it)
     {
