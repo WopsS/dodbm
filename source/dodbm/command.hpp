@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include <dodbm/db_result.hpp>
+
 namespace dodbm
 {
     class command
@@ -14,6 +16,8 @@ namespace dodbm
         command& operator<<(const std::string& rhs);
 
         virtual void execute_non_query() = 0;
+
+        virtual db_result execute_query() = 0;
 
     private:
 
