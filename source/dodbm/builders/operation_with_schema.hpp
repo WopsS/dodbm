@@ -16,13 +16,19 @@ namespace dodbm
 
             static_assert(std::is_base_of<dodbm::operation_with_schema, Operation>::value, "Operation should extend \"dodbm::operation_with_schema\"");
 
-            using operation::operation;
+            using base_t = builders::operation<Operation>;
+
+            using base_t::operation;
 
             const T& schema(const std::string& name)
             {
-                m_operation->set_schema(name);
+                base_t::m_operation->set_schema(name);
                 return *reinterpret_cast<T*>(this);
             }
+
+        protected:
+
+            virtual ~operation_with_schema() = default;
         };
     }
 }
