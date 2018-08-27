@@ -1,6 +1,11 @@
 #include <dodbm/collation.hpp>
 #include <dodbm/exception.hpp>
 
+dodbm::collation::collation()
+    : collation("utf8mb4_unicode_ci", "utf8mb4")
+{
+}
+
 dodbm::collation::collation(const std::string& name, const std::string& charset)
     : m_name(name)
     , m_charset(charset)

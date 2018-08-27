@@ -8,7 +8,9 @@ namespace dodbm
     {
     public:
 
+        collation();
         collation(const std::string& name, const std::string& charset);
+
         ~collation() = default;
 
         operator const std::string() const; 

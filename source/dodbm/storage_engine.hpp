@@ -8,7 +8,9 @@ namespace dodbm
     {
     public:
 
+        storage_engine();
         storage_engine(const std::string& name);
+
         ~storage_engine() = default;
 
         operator const std::string() const;

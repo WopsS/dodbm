@@ -21,14 +21,14 @@ namespace dodbm
             template<typename T>
             const create_table& engine() const
             {
-                m_operation->set_engine(std::unique_ptr<storage_engine>(new dodbm::storage_engine(T::name, T::charset)));
+                m_operation->set_engine(dodbm::storage_engine(T::name, T::charset));
                 return *this;
             }
 
             template<typename T>
             const create_table& collation() const
             {
-                m_operation->set_collation(std::unique_ptr<dodbm::collation>(new dodbm::collation(T::name, T::charset)));
+                m_operation->set_collation(dodbm::collation(T::name, T::charset));
                 return *this;
             }
 
