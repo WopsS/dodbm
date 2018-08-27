@@ -9,7 +9,7 @@ std::queue<dodbm::command> dodbm::sql_generator::generate(std::queue<std::shared
     {
         auto operation = operations.front();
 
-        switch (operation-get_type())
+        switch (operation->get_type())
         {
             default:
             {
