@@ -47,7 +47,7 @@ void dodbm::repository::migrate()
         //operations.emplace(history.get_insert_operation(name));
 
         auto generator = m_provider->get_sql_generator();
-        auto commands = generator.generate(operations);
+        auto commands = generator.generate(operations, helper);
 
         connection->start_transaction();
 
@@ -99,7 +99,7 @@ void dodbm::repository::rollback_to(const std::string& name)
         //operations.emplace(history.get_delete_operation(name));
 
         auto generator = m_provider->get_sql_generator();
-        auto commands = generator.generate(operations);
+        auto commands = generator.generate(operations, helper);
 
         connection->start_transaction();
 
