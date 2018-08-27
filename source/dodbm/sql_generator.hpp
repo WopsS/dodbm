@@ -4,6 +4,7 @@
 
 #include <dodbm/command.hpp>
 #include <dodbm/operation.hpp>
+#include <dodbm/sql_generator_helper.hpp>
 
 namespace dodbm
 {
