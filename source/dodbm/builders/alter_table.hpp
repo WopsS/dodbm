@@ -1,21 +1,19 @@
 #pragma once
 
-#include <string>
-
 #include <dodbm/collation.hpp>
 
-#include <dodbm/builders/operation.hpp>
+#include <dodbm/builders/operation_with_schema.hpp>
 #include <dodbm/operations/alter_table.hpp>
 
 namespace dodbm
 {
     namespace builders
     {
-        class alter_table : public builders::operation<operations::alter_table>
+        class alter_table : public builders::operation_with_schema<alter_table, operations::alter_table>
         {
         public:
 
-            using operation::operation;
+            using operation_with_schema::operation_with_schema;
 
             template<typename T>
             const alter_table& engine() const

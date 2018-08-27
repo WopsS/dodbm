@@ -1,16 +1,13 @@
 #pragma once
 
-#include <cstdint>
-#include <string>
-
 #include <dodbm/collation.hpp>
-#include <dodbm/operation.hpp>
+#include <dodbm/operation_with_schema.hpp>
 
 namespace dodbm
 {
     namespace operations
     {
-        class create_table : public operation
+        class create_table : public operation_with_schema
         {
         public:
 

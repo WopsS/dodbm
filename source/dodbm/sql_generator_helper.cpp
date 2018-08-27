@@ -10,7 +10,14 @@ const std::string dodbm::sql_generator_helper::delimit_identifier(const std::str
     return "`" + identifier + "`";
 }
 
-const std::string dodbm::sql_generator_helper::delimit_identifier(const std::string& table, const std::string& column) const
+const std::string dodbm::sql_generator_helper::delimit_identifier(const std::string& schema, const std::string& table) const
 {
-    return delimit_identifier(table) + "." + delimit_identifier(column);
+    std::string prefix;
+    if (!schema.empty())
+    {
+        prefix = delimit_identifier(schema) + ".";
+    }
+
+
+    return prefix + delimit_identifier(table);
 }

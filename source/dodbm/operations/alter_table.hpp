@@ -1,15 +1,13 @@
 #pragma once
 
-#include <string>
-
 #include <dodbm/collation.hpp>
-#include <dodbm/operation.hpp>
+#include <dodbm/operation_with_schema.hpp>
 
 namespace dodbm
 {
     namespace operations
     {
-        class alter_table : public operation
+        class alter_table : public operation_with_schema
         {
         public:
 

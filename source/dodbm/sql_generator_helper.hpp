@@ -15,6 +15,6 @@ namespace dodbm
 
         virtual const std::string delimit_identifier(const std::string& identifier) const;
 
-        virtual const std::string delimit_identifier(const std::string& table, const std::string& column) const;
+        virtual const std::string delimit_identifier(const std::string& schema, const std::string& table) const;
     };
 }

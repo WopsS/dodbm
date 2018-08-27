@@ -4,18 +4,18 @@
 
 #include <dodbm/collation.hpp>
 
-#include <dodbm/builders/operation.hpp>
+#include <dodbm/builders/operation_with_schema.hpp>
 #include <dodbm/operations/create_table.hpp>
 
 namespace dodbm
 {
     namespace builders
     {
-        class create_table : public builders::operation<operations::create_table>
+        class create_table : public builders::operation_with_schema<create_table, operations::create_table>
         {
         public:
 
-            using operation::operation;
+            using operation_with_schema::operation_with_schema;
 
             template<typename T>
             const create_table& engine() const

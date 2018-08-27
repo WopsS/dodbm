@@ -1,8 +1,6 @@
 #include <dodbm/builders/migration.hpp>
 #include <dodbm/exception.hpp>
 
-#include <dodbm/operations/drop_table.hpp>
-
 std::queue<std::shared_ptr<dodbm::operation>> dodbm::builders::migration::get_operations() const
 {
     return m_operations;
@@ -16,9 +14,12 @@ dodbm::builders::create_table dodbm::builders::migration::create_table(const std
     return builders::create_table(ptr);
 }
 
-void dodbm::builders::migration::drop_table(const std::string& name)
+dodbm::builders::drop_table dodbm::builders::migration::drop_table(const std::string& name)
 {
-    m_operations.emplace(new operations::drop_table(name));
+    std::shared_ptr<operations::drop_table> ptr(new operations::drop_table(name));
+    m_operations.emplace(ptr);
+
+    return builders::drop_table(ptr);
 }
 
 dodbm::builders::alter_table dodbm::builders::migration::alter_table(const std::string& name)

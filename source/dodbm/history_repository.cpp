@@ -14,11 +14,11 @@ const std::string dodbm::history_repository::get_last_applied_migration(connecti
 {
     command command;
     command << "SELECT "
-            << helper.delimit_identifier(get_table_name(), get_id_column_name())
+            << helper.delimit_identifier(get_id_column_name())
             << " FROM "
             << helper.delimit_identifier(get_table_name())
             << " ORDER BY "
-            << helper.delimit_identifier(get_table_name(), get_id_column_name())
+            << helper.delimit_identifier(get_id_column_name())
             << " ASC "
             << "LIMIT 1";
 

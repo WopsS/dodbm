@@ -52,7 +52,9 @@ std::queue<dodbm::command> dodbm::sql_generator::generate(std::queue<std::shared
 dodbm::command dodbm::sql_generator::generate(const operations::alter_table& operation, const sql_generator_helper& helper)
 {
     command result;
-    result << "ALTER TABLE ";
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_name())
+           << " ";
 
     generate_table_options(result, helper, operation.get_engine(), operation.get_collation(), operation.get_comment());
 
@@ -63,7 +65,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::create_table& op
 {
     command result;
     result << "CREATE TABLE "
-           << helper.delimit_identifier(operation.get_name())
+           << helper.delimit_identifier(operation.get_schema(), operation.get_name())
            << " ()";
 
     // TODO: Append columns.
@@ -77,7 +79,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_table& oper
 {
     command result;
     result << "DROP TABLE "
-           << helper.delimit_identifier(operation.get_name());
+           << helper.delimit_identifier(operation.get_schema(), operation.get_name());
 
     return result;
 }
@@ -86,9 +88,9 @@ dodbm::command dodbm::sql_generator::generate(const operations::rename_table& op
 {
     command result;
     result << "RENAME TABLE "
-           << helper.delimit_identifier(operation.get_name())
+           << helper.delimit_identifier(operation.get_schema(), operation.get_name())
            << " TO "
-           << helper.delimit_identifier(operation.get_new_name());
+           << helper.delimit_identifier(operation.get_schema(), operation.get_new_name());
 
     return result;
 }

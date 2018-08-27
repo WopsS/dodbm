@@ -1,14 +1,12 @@
 #pragma once
 
-#include <string>
-
-#include <dodbm/operation.hpp>
+#include <dodbm/operation_with_schema.hpp>
 
 namespace dodbm
 {
     namespace operations
     {
-        class rename_table : public operation
+        class rename_table : public operation_with_schema
         {
         public:
 
@@ -23,6 +21,7 @@ namespace dodbm
             const std::string& get_new_name() const;
 
         private:
+
             std::string m_name;
             std::string m_new_name;
         };
