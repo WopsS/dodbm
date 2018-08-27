@@ -1,5 +1,6 @@
 #pragma once
 
+#include <dodbm/history_repository.hpp>
 #include <dodbm/sql_generator.hpp>
 
 namespace dodbm
@@ -12,5 +13,7 @@ namespace dodbm
         ~provider() = default;
 
         virtual const sql_generator get_generator() const;
+
+        virtual const history_repository get_history_repository() const;
     };
 }
