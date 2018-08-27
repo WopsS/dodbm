@@ -29,8 +29,8 @@ void dodbm::repository::migrate()
 
     for (auto i = begin; i != m_migrations.end(); ++i)
     {
-        auto& name = i->first;
-        auto& migration = i->second;
+        const auto& name = i->first;
+        const auto& migration = i->second;
 
         auto operations = migration->get_up_operations();
 
@@ -65,8 +65,8 @@ void dodbm::repository::rollback_to(const std::string& name)
 
     for (auto i = rbegin; i != rend; ++i)
     {
-        auto& name = i->first;
-        auto& migration = i->second;
+        const auto& name = i->first;
+        const auto& migration = i->second;
 
         auto operations = migration->get_down_operations();
 
