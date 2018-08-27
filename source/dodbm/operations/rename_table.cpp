@@ -6,7 +6,7 @@ dodbm::operations::rename_table::rename_table(const std::string& name)
 {
     if (name.empty())
     {
-        throw dodbm::exception("Table name is empty");
+        throw dodbm::exception("Operation \"rename_table\" requires a valid name");
     }
 }
 
@@ -24,7 +24,7 @@ void dodbm::operations::rename_table::set_new_name(const std::string& name)
 {
     if (name.empty())
     {
-        throw dodbm::exception("The new name is empty");
+        throw dodbm::exception("Operation \"rename_table\" requires a valid new name");
     }
 
     m_new_name = name;
@@ -34,7 +34,7 @@ const std::string& dodbm::operations::rename_table::get_new_name() const
 {
     if (m_new_name.empty())
     {
-        throw dodbm::exception("The new name is not set");
+        throw dodbm::exception("Operation \"rename_table\" requires a valid new name to be set");
     }
 
     return m_new_name;

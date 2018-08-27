@@ -6,7 +6,7 @@ dodbm::operations::create_table::create_table(const std::string& name)
 {
     if (name.empty())
     {
-        throw dodbm::exception("Table name is empty");
+        throw dodbm::exception("Operation \"create_table\" requires a valid name");
     }
 }
 
@@ -42,6 +42,11 @@ const dodbm::collation& dodbm::operations::create_table::get_collation() const
 
 void dodbm::operations::create_table::set_comment(const std::string& text)
 {
+    if (text.empty())
+    {
+        throw dodbm::exception("Operation \"create_table\" requires a valid comment");
+    }
+
     m_comment = text;
 }
 

@@ -6,7 +6,7 @@ dodbm::operations::drop_schema::drop_schema(const std::string& name)
 {
     if (name.empty())
     {
-        throw dodbm::exception("Table name is empty");
+        throw dodbm::exception("Operation \"drop_schema\" requires a valid name");
     }
 }
 

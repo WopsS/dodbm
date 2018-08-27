@@ -6,7 +6,7 @@ dodbm::operations::alter_table::alter_table(const std::string& name)
 {
     if (name.empty())
     {
-        throw dodbm::exception("Table name is empty");
+        throw dodbm::exception("Operation \"alter_table\" requires a valid name");
     }
 }
 
@@ -42,6 +42,11 @@ const dodbm::collation& dodbm::operations::alter_table::get_collation() const
 
 void dodbm::operations::alter_table::set_comment(const std::string& text)
 {
+    if (text.empty())
+    {
+        throw dodbm::exception("Operation \"alter_database\" requires a valid comment");
+    }
+
     m_comment = text;
 }
 

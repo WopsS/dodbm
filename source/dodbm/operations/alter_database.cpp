@@ -4,6 +4,10 @@
 dodbm::operations::alter_database::alter_database(const std::string& name)
     : m_name(name)
 {
+    if (name.empty())
+    {
+        throw dodbm::exception("Operation \"alter_database\" requires a valid name");
+    }
 }
 
 dodbm::operation::type dodbm::operations::alter_database::get_type() const

@@ -1,8 +1,13 @@
 #include <dodbm/operations/ensure_schema.hpp>
+#include <dodbm/exception.hpp>
 
 dodbm::operations::ensure_schema::ensure_schema(const std::string& name)
     : m_name(name)
 {
+    if (name.empty())
+    {
+        throw dodbm::exception("Operation \"ensure_schema\" requires a valid name");
+    }
 }
 
 dodbm::operation::type dodbm::operations::ensure_schema::get_type() const

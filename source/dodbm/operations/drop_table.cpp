@@ -6,7 +6,7 @@ dodbm::operations::drop_table::drop_table(const std::string& name)
 {
     if (name.empty())
     {
-        throw dodbm::exception("Table name is empty");
+        throw dodbm::exception("Operation \"drop_table\" requires a valid name");
     }
 }
 
