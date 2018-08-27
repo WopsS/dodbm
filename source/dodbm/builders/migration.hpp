@@ -7,6 +7,8 @@
 
 #include <dodbm/builders/alter_database.hpp>
 
+#include <dodbm/builders/ensure_schema.hpp>
+
 #include <dodbm/builders/alter_table.hpp>
 #include <dodbm/builders/create_table.hpp>
 #include <dodbm/builders/drop_table.hpp>
@@ -26,6 +28,9 @@ namespace dodbm
             std::queue<std::shared_ptr<dodbm::operation>> get_operations() const;
 
             builders::alter_database alter_database(const std::string& name);
+
+            builders::ensure_schema ensure_schema(const std::string& name);
+            void drop_schema(const std::string& name);
 
             builders::create_table create_table(const std::string& name);
             builders::drop_table drop_table(const std::string& name);

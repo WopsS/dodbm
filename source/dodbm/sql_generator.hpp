@@ -9,6 +9,9 @@
 
 #include <dodbm/operations/alter_database.hpp>
 
+#include <dodbm/operations/drop_schema.hpp>
+#include <dodbm/operations/ensure_schema.hpp>
+
 #include <dodbm/operations/alter_table.hpp>
 #include <dodbm/operations/create_table.hpp>
 #include <dodbm/operations/drop_table.hpp>
@@ -29,6 +32,9 @@ namespace dodbm
     protected:
 
         virtual command generate(const operations::alter_database& operation, const sql_generator_helper& helper);
+
+        virtual command generate(const operations::drop_schema& operation, const sql_generator_helper& helper);
+        virtual command generate(const operations::ensure_schema& operation, const sql_generator_helper& helper);
 
         virtual command generate(const operations::alter_table& operation, const sql_generator_helper& helper);
         virtual command generate(const operations::create_table& operation, const sql_generator_helper& helper);

@@ -12,6 +12,9 @@ namespace dodbm
         {
             alter_database,
 
+            ensure_schema,
+            drop_schema,
+
             alter_table,
             create_table,
             drop_table,

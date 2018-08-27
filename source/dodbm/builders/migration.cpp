@@ -1,6 +1,8 @@
 #include <dodbm/builders/migration.hpp>
 #include <dodbm/exception.hpp>
 
+#include <dodbm/operations/drop_schema.hpp>
+
 std::queue<std::shared_ptr<dodbm::operation>> dodbm::builders::migration::get_operations() const
 {
     return m_operations;
@@ -12,6 +14,19 @@ dodbm::builders::alter_database dodbm::builders::migration::alter_database(const
     m_operations.emplace(ptr);
 
     return builders::alter_database(ptr);
+}
+
+dodbm::builders::ensure_schema dodbm::builders::migration::ensure_schema(const std::string& name)
+{
+    std::shared_ptr<operations::ensure_schema> ptr(new operations::ensure_schema(name));
+    m_operations.emplace(ptr);
+
+    return builders::ensure_schema(ptr);
+}
+
+void dodbm::builders::migration::drop_schema(const std::string& name)
+{
+    m_operations.emplace(new operations::drop_schema(name));
 }
 
 dodbm::builders::create_table dodbm::builders::migration::create_table(const std::string& name)

@@ -68,6 +68,29 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_database& 
     return result;
 }
 
+dodbm::command dodbm::sql_generator::generate(const operations::drop_schema& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "DROP SCHEMA "
+           << helper.delimit_identifier(operation.get_name());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::ensure_schema& operation, const sql_generator_helper& helper)
+{
+    const auto& collation = operation.get_collation();
+    const auto& charset = collation.get_charset();
+
+    command result;
+    result << "CREATE SCHEMA IF NOT EXISTS"
+           << helper.delimit_identifier(operation.get_name())
+           << " DEFAULT CHARSET=" << charset
+           << " COLLATE=" << collation;
+
+    return result;
+}
+
 dodbm::command dodbm::sql_generator::generate(const operations::alter_table& operation, const sql_generator_helper& helper)
 {
     command result;
