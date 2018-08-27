@@ -20,14 +20,14 @@ const std::string& dodbm::operations::create_table::get_name() const
     return m_name;
 }
 
-void dodbm::operations::create_table::set_engine(const std::string& name)
+void dodbm::operations::create_table::set_engine(std::unique_ptr<storage_engine> engine)
 {
-    m_engine = name;
+    m_engine = std::move(engine);
 }
 
-const std::string& dodbm::operations::create_table::get_engine() const
+const dodbm::storage_engine& dodbm::operations::create_table::get_engine() const
 {
-    return m_engine;
+    return *m_engine;
 }
 
 void dodbm::operations::create_table::set_collation(collation value)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <dodbm/collation.hpp>
+#include <dodbm/storage_engine.hpp>
 
 #include <dodbm/builders/operation_with_schema.hpp>
 #include <dodbm/operations/alter_table.hpp>
@@ -18,7 +19,7 @@ namespace dodbm
             template<typename T>
             const alter_table& engine() const
             {
-                m_operation->set_engine(T::name);
+                m_operation->set_engine(std::unique_ptr<dodbm::storage_engine>(new storage_engine(T::name)));
                 return *this;
             }
 

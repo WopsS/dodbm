@@ -1,7 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include <dodbm/collation.hpp>
 #include <dodbm/operation_with_schema.hpp>
+#include <dodbm/storage_engine.hpp>
 
 namespace dodbm
 {
@@ -18,8 +21,8 @@ namespace dodbm
 
             const std::string& get_name() const;
 
-            void set_engine(const std::string& name);
-            const std::string& get_engine() const;
+            void set_engine(std::unique_ptr<storage_engine> engine);
+            const storage_engine& get_engine() const;
 
             void set_collation(collation value);
             const collation& get_collation() const;
@@ -31,8 +34,8 @@ namespace dodbm
 
             std::string m_name;
 
-            std::string m_engine;
             collation m_collation;
+            std::unique_ptr<storage_engine> m_engine;
             std::string m_comment;
         };
     }
