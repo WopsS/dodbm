@@ -15,8 +15,23 @@ void dodbm::provider::execute(std::queue<command> commands)
     while (!commands.empty())
     {
         auto& command = commands.front();
-        command.execute_non_query();
+        get_connection()->execute_non_query(command.get_text());
 
         commands.pop();
     }
+}
+
+void dodbm::provider::start_transaction()
+{
+    get_connection()->start_transaction();
+}
+
+void dodbm::provider::commit()
+{
+    get_connection()->commit();
+}
+
+void dodbm::provider::rollback()
+{
+    get_connection()->rollback();
 }

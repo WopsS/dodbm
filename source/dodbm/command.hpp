@@ -15,9 +15,7 @@ namespace dodbm
 
         command& operator<<(const std::string& rhs);
 
-        virtual void execute_non_query() = 0;
-
-        virtual db_result execute_query() = 0;
+        const std::string get_text() const;
 
     private:
 
