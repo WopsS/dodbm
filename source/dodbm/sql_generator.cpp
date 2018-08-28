@@ -57,6 +57,12 @@ std::queue<dodbm::command> dodbm::sql_generator::generate(std::queue<std::shared
 dodbm::command dodbm::sql_generator::generate(const operations::alter_database& operation, const sql_generator_helper& helper)
 {
     const auto& collation = operation.get_collation();
+
+    if (collation.empty())
+    {
+        throw dodbm::exception("Operation \"alter_database\" requires a valid collation");
+    }
+
     const auto& charset = collation.get_charset();
 
     command result;
@@ -84,9 +90,13 @@ dodbm::command dodbm::sql_generator::generate(const operations::ensure_schema& o
 
     command result;
     result << "CREATE SCHEMA IF NOT EXISTS"
-           << helper.delimit_identifier(operation.get_name())
-           << " DEFAULT CHARSET=" << charset
-           << " COLLATE=" << collation;
+           << helper.delimit_identifier(operation.get_name());
+
+    if (!collation.empty())
+    {
+        result << " DEFAULT CHARSET=" << charset
+               << " COLLATE=" << collation;
+    }
 
     return result;
 }

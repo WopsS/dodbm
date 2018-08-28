@@ -8,7 +8,7 @@ namespace dodbm
     {
     public:
 
-        storage_engine();
+        storage_engine() = default;
         storage_engine(const std::string& name);
 
         ~storage_engine() = default;

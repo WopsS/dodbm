@@ -1,11 +1,6 @@
 #include <dodbm/storage_engine.hpp>
 #include <dodbm/exception.hpp>
 
-dodbm::storage_engine::storage_engine()
-    : storage_engine("InnoDB")
-{
-}
-
 dodbm::storage_engine::storage_engine(const std::string& name)
     : m_name(name)
 {
