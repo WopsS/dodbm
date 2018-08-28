@@ -1,36 +1,26 @@
 #pragma once
 
-#include <dodbm/collation.hpp>
-#include <dodbm/storage_engine.hpp>
-
-#include <dodbm/builders/operation_with_schema.hpp>
+#include <dodbm/builders/operation.hpp>
 #include <dodbm/operations/alter_table.hpp>
+
+#include <dodbm/builders/helpers/has_collation.hpp>
+#include <dodbm/builders/helpers/has_comment.hpp>
+#include <dodbm/builders/helpers/has_engine.hpp>
+#include <dodbm/builders/helpers/has_schema.hpp>
 
 namespace dodbm
 {
     namespace builders
     {
-        class alter_table : public builders::operation_with_schema<alter_table, operations::alter_table>
+        class alter_table : public builders::operation<operations::alter_table>
+            , public helpers::has_collation<alter_table>
+            , public helpers::has_comment<alter_table>
+            , public helpers::has_engine<alter_table>
+            , public helpers::has_schema<alter_table>
         {
         public:
 
-            using operation_with_schema::operation_with_schema;
-
-            template<typename T>
-            const alter_table& engine() const
-            {
-                m_operation->set_engine(dodbm::storage_engine(T::name, T::charset));
-                return *this;
-            }
-
-            template<typename T>
-            const alter_table& collation() const
-            {
-                m_operation->set_collation(dodbm::collation(T::name, T::charset));
-                return *this;
-            }
-
-            const alter_table& comment(const std::string& text) const;
+            using operation::operation;
         };
     }
 }

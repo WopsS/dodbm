@@ -1,40 +1,29 @@
 #pragma once
 
-#include <dodbm/collation.hpp>
-#include <dodbm/operation_with_schema.hpp>
-#include <dodbm/storage_engine.hpp>
+#include <dodbm/operation.hpp>
+
+#include <dodbm/operations/helpers/has_collation.hpp>
+#include <dodbm/operations/helpers/has_comment.hpp>
+#include <dodbm/operations/helpers/has_engine.hpp>
+#include <dodbm/operations/helpers/has_name.hpp>
+#include <dodbm/operations/helpers/has_schema.hpp>
 
 namespace dodbm
 {
     namespace operations
     {
-        class create_table : public operation_with_schema
+        class create_table : public operation
+            , public helpers::has_collation
+            , public helpers::has_comment
+            , public helpers::has_engine
+            , public helpers::has_name
+            , public helpers::has_schema
         {
         public:
 
-            create_table(const std::string& name);
-            ~create_table() = default;
+            using has_name::has_name;
 
             type get_type() const final;
-
-            const std::string& get_name() const;
-
-            void set_engine(storage_engine engine);
-            const storage_engine& get_engine() const;
-
-            void set_collation(collation value);
-            const collation& get_collation() const;
-
-            void set_comment(const std::string& text);
-            const std::string& get_comment() const;
-
-        private:
-
-            std::string m_name;
-
-            storage_engine m_engine;
-            collation m_collation;
-            std::string m_comment;
         };
     }
 }

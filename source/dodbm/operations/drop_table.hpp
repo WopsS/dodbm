@@ -1,25 +1,23 @@
 #pragma once
 
-#include <dodbm/operation_with_schema.hpp>
+#include <dodbm/operation.hpp>
+
+#include <dodbm/operations/helpers/has_name.hpp>
+#include <dodbm/operations/helpers/has_schema.hpp>
 
 namespace dodbm
 {
     namespace operations
     {
-        class drop_table : public operation_with_schema
+        class drop_table : public operation
+            , public helpers::has_name
+            , public helpers::has_schema
         {
         public:
 
-            drop_table(const std::string& name);
-            ~drop_table() = default;
+            using has_name::has_name;
 
             type get_type() const final;
-
-            const std::string& get_name() const;
-
-        private:
-
-            std::string m_name;
         };
     }
 }

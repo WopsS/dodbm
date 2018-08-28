@@ -2,41 +2,31 @@
 
 #include <functional>
 
-#include <dodbm/collation.hpp>
-#include <dodbm/storage_engine.hpp>
-
-#include <dodbm/builders/operation_with_schema.hpp>
+#include <dodbm/builders/operation.hpp>
 #include <dodbm/operations/create_table.hpp>
+
+#include <dodbm/builders/helpers/has_collation.hpp>
+#include <dodbm/builders/helpers/has_comment.hpp>
+#include <dodbm/builders/helpers/has_engine.hpp>
+#include <dodbm/builders/helpers/has_schema.hpp>
 
 namespace dodbm
 {
     namespace builders
     {
-        class create_table : public builders::operation_with_schema<create_table, operations::create_table>
+        class create_table : public builders::operation<operations::create_table>
+            , public helpers::has_comment<create_table>
+            , public helpers::has_collation<create_table>
+            , public helpers::has_engine<create_table>
+            , public helpers::has_schema<create_table>
         {
         public:
 
-            using operation_with_schema::operation_with_schema;
-
-            template<typename T>
-            const create_table& engine() const
-            {
-                m_operation->set_engine(dodbm::storage_engine(T::name, T::charset));
-                return *this;
-            }
-
-            template<typename T>
-            const create_table& collation() const
-            {
-                m_operation->set_collation(dodbm::collation(T::name, T::charset));
-                return *this;
-            }
+            using operation::operation;
 
             const create_table& columns(std::function<void()> func);
 
             const create_table& constraints(std::function<void()> func) const;
-
-            const create_table& comment(const std::string& text) const;
         };
     }
 }

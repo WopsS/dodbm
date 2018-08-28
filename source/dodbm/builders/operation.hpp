@@ -21,6 +21,11 @@ namespace dodbm
             {
             }
 
+            const std::shared_ptr<T> get_operation() const
+            {
+                return m_operation;
+            }
+
         protected:
 
             virtual ~operation() = default;
