@@ -12,6 +12,16 @@ dodbm::command dodbm::sql_generator::generate(operation& operation, const sql_ge
             auto& instance = *static_cast<operations::alter_database*>(&operation);
             return generate(instance, helper);
         }
+        case type::drop_schema:
+        {
+            auto& instance = *static_cast<operations::drop_schema*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::ensure_schema:
+        {
+            auto& instance = *static_cast<operations::ensure_schema*>(&operation);
+            return generate(instance, helper);
+        }
         case type::alter_table:
         {
             auto& instance = *static_cast<operations::alter_table*>(&operation);
