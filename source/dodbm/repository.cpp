@@ -68,7 +68,7 @@ void dodbm::repository::migrate()
 
 void dodbm::repository::rollback(const std::string& name)
 {
-    auto it = m_migrations.find("name");
+    auto it = m_migrations.find(name);
     if (it != m_migrations.end())
     {
         const auto& name = it->first;
