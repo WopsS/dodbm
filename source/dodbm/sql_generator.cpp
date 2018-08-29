@@ -99,7 +99,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::ensure_schema& o
     const auto& charset = collation.get_charset();
 
     command result;
-    result << "CREATE SCHEMA IF NOT EXISTS"
+    result << "CREATE SCHEMA IF NOT EXISTS "
            << helper.delimit_identifier(operation.get_name());
 
     if (!collation.empty())
@@ -115,8 +115,16 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_table& ope
 {
     command result;
     result << "ALTER TABLE "
-           << helper.delimit_identifier(operation.get_schema(), operation.get_name())
-           << " ";
+           << helper.delimit_identifier(operation.get_schema(), operation.get_name());
+
+    const auto& engine = operation.get_engine();
+    const auto& collation = operation.get_collation();
+    const auto& comment = operation.get_comment();
+
+    if (engine.empty() && collation.empty() && comment.empty())
+    {
+        throw dodbm::exception("Operation \"alter_table\" requires at least one valid option");
+    }
 
     generate_table_options(result, helper, operation.get_engine(), operation.get_collation(), operation.get_comment());
 
@@ -161,7 +169,7 @@ void dodbm::sql_generator::generate_table_options(command& command, const sql_ge
 {
     if (!engine.empty())
     {
-        command << " ENGINE " << engine;
+        command << " ENGINE=" << engine;
     }
 
     if (!collation.empty())
