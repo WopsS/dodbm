@@ -13,8 +13,6 @@ namespace dodbm
             {
             public:
 
-                has_comment() = default;
-
                 const T& comment(const std::string& text) const
                 {
                     auto ptr = static_cast<const T*>(this);
@@ -25,6 +23,7 @@ namespace dodbm
 
             protected:
 
+                has_comment() = default;
                 virtual ~has_comment() = default;
             };
         }

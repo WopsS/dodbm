@@ -13,8 +13,6 @@ namespace dodbm
             {
             public:
 
-                has_schema() = default;
-
                 const T& schema(const std::string& name) const
                 {
                     auto ptr = static_cast<const T*>(this);
@@ -25,6 +23,7 @@ namespace dodbm
 
             protected:
 
+                has_schema() = default;
                 virtual ~has_schema() = default;
             };
         }

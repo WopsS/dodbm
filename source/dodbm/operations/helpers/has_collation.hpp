@@ -12,13 +12,12 @@ namespace dodbm
             {
             public:
 
-                has_collation() = default;
-
                 void set_collation(collation value);
                 const collation& get_collation() const;
 
             protected:
 
+                has_collation() = default;
                 virtual ~has_collation() = default;
 
             private:

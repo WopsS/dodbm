@@ -13,8 +13,6 @@ namespace dodbm
             {
             public:
 
-                has_engine() = default;
-
                 template<typename Engine>
                 const T& engine() const
                 {
@@ -26,6 +24,7 @@ namespace dodbm
 
             protected:
 
+                has_engine() = default;
                 virtual ~has_engine() = default;
             };
         }

@@ -13,8 +13,6 @@ namespace dodbm
             {
             public:
 
-                has_collation() = default;
-
                 template<typename Collation>
                 const T& collation() const
                 {
@@ -26,6 +24,7 @@ namespace dodbm
 
             protected:
 
+                has_collation() = default;
                 virtual ~has_collation() = default;
             };
         }

@@ -12,13 +12,12 @@ namespace dodbm
             {
             public:
 
-                has_engine() = default;
-
                 void set_engine(storage_engine engine);
                 const storage_engine& get_engine() const;
 
             protected:
 
+                has_engine() = default;
                 virtual ~has_engine() = default;
 
             private:
