@@ -32,11 +32,15 @@ namespace dodbm
             rollback_to(dodbm::name_of<T>());
         }
 
+        void rollback(const std::string& name);
+
         void migrate();
 
     private:
 
         void rollback_to(const std::string& name);
+
+        void rollback(const std::string& name, migration* migration);
 
         std::unique_ptr<provider> m_provider;
 

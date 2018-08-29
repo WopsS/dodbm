@@ -13,6 +13,18 @@ dodbm::repository::repository(std::unique_ptr<provider> provider)
     }
 }
 
+void dodbm::repository::rollback(const std::string& name)
+{
+    auto it = m_migrations.find("name");
+    if (it != m_migrations.end())
+    {
+        const auto& name = it->first;
+        const auto& migration = it->second;
+
+        rollback(name, migration.get());
+    }
+}
+
 void dodbm::repository::migrate()
 {
     auto connection = m_provider->get_connection();
@@ -78,42 +90,55 @@ void dodbm::repository::rollback_to(const std::string& name)
         return it.first == last_migration;
     });
 
+    if (rbegin == m_migrations.rend())
+    {
+        rbegin = m_migrations.rbegin();
+    }
+
     auto rend = std::find_if(m_migrations.rbegin(), m_migrations.rend(), [&name](const decltype(m_migrations)::value_type& it)
     {
         return it.first == name;
     });
 
-    for (auto i = rbegin; i != rend; ++i)
+    for (auto it = rbegin; it != rend; it++)
     {
-        const auto& name = i->first;
-        const auto& migration = i->second;
+        const auto& name = it->first;
+        const auto& migration = it->second;
 
-        auto operations = migration->get_down_operations();
+        rollback(name, migration.get());
+    }
+}
 
-        if (operations.empty())
-        {
-            throw dodbm::exception("Down operations for \"" + name + "\" is empty");
-        }
+void dodbm::repository::rollback(const std::string& name, migration* migration)
+{
+    auto connection = m_provider->get_connection();
+    auto helper = m_provider->get_sql_generator_helper();
 
-        // TODO: Remove migration from history.
-        //operations.emplace(history.get_delete_operation(name));
+    auto operations = migration->get_down_operations();
 
-        auto generator = m_provider->get_sql_generator();
-        auto commands = generator.generate(operations, helper);
+    if (operations.empty())
+    {
+        throw dodbm::exception("Down operations for \"" + name + "\" is empty");
+    }
 
-        connection->start_transaction();
+    // TODO: Remove migration from history.
+    //operations.emplace(history.get_delete_operation(name));
 
-        try
-        {
-            command_executor executor(connection);
-            executor.execute(std::move(commands));
+    auto generator = m_provider->get_sql_generator();
+    auto commands = generator.generate(operations, helper);
 
-            connection->commit();
-        }
-        catch (dodbm::exception ex)
-        {
-            connection->rollback();
-            throw;
-        }
+    connection->start_transaction();
+
+    try
+    {
+        command_executor executor(connection);
+        executor.execute(std::move(commands));
+
+        connection->commit();
+    }
+    catch (dodbm::exception ex)
+    {
+        connection->rollback();
+        throw;
     }
 }
