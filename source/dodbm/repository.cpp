@@ -13,18 +13,6 @@ dodbm::repository::repository(std::unique_ptr<provider> provider)
     }
 }
 
-void dodbm::repository::rollback(const std::string& name)
-{
-    auto it = m_migrations.find("name");
-    if (it != m_migrations.end())
-    {
-        const auto& name = it->first;
-        const auto& migration = it->second;
-
-        rollback(name, migration.get());
-    }
-}
-
 void dodbm::repository::migrate()
 {
     auto connection = m_provider->get_connection();
@@ -78,29 +66,10 @@ void dodbm::repository::migrate()
     }
 }
 
-void dodbm::repository::rollback_to(const std::string& name)
+void dodbm::repository::rollback(const std::string& name)
 {
-    auto connection = m_provider->get_connection();
-    auto history = m_provider->get_history_repository();
-    auto helper = m_provider->get_sql_generator_helper();
-    auto last_migration = history.get_last_applied_migration(connection, helper);
-
-    auto rbegin = std::find_if(m_migrations.rbegin(), m_migrations.rend(), [&last_migration](const decltype(m_migrations)::value_type& it)
-    {
-        return it.first == last_migration;
-    });
-
-    if (rbegin == m_migrations.rend())
-    {
-        rbegin = m_migrations.rbegin();
-    }
-
-    auto rend = std::find_if(m_migrations.rbegin(), m_migrations.rend(), [&name](const decltype(m_migrations)::value_type& it)
-    {
-        return it.first == name;
-    });
-
-    for (auto it = rbegin; it != rend; it++)
+    auto it = m_migrations.find("name");
+    if (it != m_migrations.end())
     {
         const auto& name = it->first;
         const auto& migration = it->second;
@@ -140,5 +109,34 @@ void dodbm::repository::rollback(const std::string& name, migration* migration)
     {
         connection->rollback();
         throw;
+    }
+}
+
+void dodbm::repository::rollback_to(const std::string& name)
+{
+    auto connection = m_provider->get_connection();
+    auto history = m_provider->get_history_repository();
+    auto helper = m_provider->get_sql_generator_helper();
+    auto last_migration = history.get_last_applied_migration(connection, helper);
+
+    auto rbegin = std::find_if(m_migrations.rbegin(), m_migrations.rend(), [&last_migration](const decltype(m_migrations)::value_type& it) {
+        return it.first == last_migration;
+    });
+
+    if (rbegin == m_migrations.rend())
+    {
+        rbegin = m_migrations.rbegin();
+    }
+
+    auto rend = std::find_if(m_migrations.rbegin(), m_migrations.rend(), [&name](const decltype(m_migrations)::value_type& it) {
+        return it.first == name;
+    });
+
+    for (auto it = rbegin; it != rend; it++)
+    {
+        const auto& name = it->first;
+        const auto& migration = it->second;
+
+        rollback(name, migration.get());
     }
 }

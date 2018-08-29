@@ -26,21 +26,28 @@ namespace dodbm
         }
 
         template<typename T>
+        void rollback()
+        {
+            static_assert(std::is_base_of<migration, T>::value, "T should extend \"dodbm::migration\"");
+            rollback(dodbm::name_of<T>());
+        }
+
+        template<typename T>
         void rollback_to()
         {
             static_assert(std::is_base_of<migration, T>::value, "T should extend \"dodbm::migration\"");
             rollback_to(dodbm::name_of<T>());
         }
 
-        void rollback(const std::string& name);
-
         void migrate();
 
     private:
 
-        void rollback_to(const std::string& name);
+        void rollback(const std::string& name);
 
         void rollback(const std::string& name, migration* migration);
+
+        void rollback_to(const std::string& name);
 
         std::unique_ptr<provider> m_provider;
 
