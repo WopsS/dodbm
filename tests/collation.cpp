@@ -31,10 +31,14 @@ TEST_CASE("Collation")
     SECTION("Non-empty collation")
     {
         using utf8mb4_unicode_ci = mocks::collations::utf8mb4_unicode_ci;
-        dodbm::collation collation(utf8mb4_unicode_ci::name, utf8mb4_unicode_ci::charset);
+
+        constexpr auto collation_name = utf8mb4_unicode_ci::name;
+        constexpr auto collation_charset = utf8mb4_unicode_ci::charset;
+
+        dodbm::collation collation(collation_name, collation_charset);
 
         REQUIRE(!collation.empty());
-        REQUIRE(std::string(collation) == utf8mb4_unicode_ci::name);
-        REQUIRE(collation.get_charset() == utf8mb4_unicode_ci::charset);
+        REQUIRE(std::string(collation) == collation_name);
+        REQUIRE(collation.get_charset() == collation_charset);
     }
 }

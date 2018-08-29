@@ -19,9 +19,11 @@ TEST_CASE("Storage engine")
     SECTION("Non-empty storage engine")
     {
         using InnoDB = mocks::storage_engines::InnoDB;
-        dodbm::storage_engine engine(InnoDB::name);
+        constexpr auto engine_name = InnoDB::name;
+
+        dodbm::storage_engine engine(engine_name);
 
         REQUIRE(!engine.empty());
-        REQUIRE(std::string(engine) == InnoDB::name);
+        REQUIRE(std::string(engine) == engine_name);
     }
 }
