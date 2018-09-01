@@ -28,10 +28,10 @@ before_script:
 
 script:
   - cd ${PREMAKE_DIR}
-  - chmod -x ./generate_gmake_projects.sh
+  - chmod +x ./generate_gmake_projects.sh
   - ./generate_gmake_projects.sh
   - cd projects
   - make config=${CONFIGURATION,,} CXX=g++-7
   - cd ${SCRIPTS_DIR}
-  - chmod -x ./run_tests.sh
+  - chmod +x ./run_tests.sh
   - ./run_tests.sh ${BUILD_DIR}/${CONFIGURATION,,}/bin
