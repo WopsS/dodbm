@@ -15,9 +15,9 @@ namespace dodbm
             ensure_schema,
             drop_schema,
 
-            alter_table,
             create_table,
             drop_table,
+            alter_table,
             rename_table
         };
 
