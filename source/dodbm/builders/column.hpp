@@ -38,18 +38,6 @@ namespace dodbm
                 return *reinterpret_cast<const T*>(this);
             }
 
-            const T& default_value(dodbm::column_default value) const
-            {
-                base_t::m_operation->set_default_value(value);
-                return *reinterpret_cast<const T*>(this);
-            }
-
-            const T& default_value(const std::string& value) const
-            {
-                base_t::m_operation->set_default_value(value);
-                return *reinterpret_cast<const T*>(this);
-            }
-
             const T& nullable() const
             {
                 base_t::m_operation->set_nullable(true);
@@ -87,6 +75,11 @@ namespace dodbm
             }
 
             // Attributes.
+
+            const T& no_attribute() const
+            {
+                return attribute(dodbm::column_attribute::none);
+            }
 
             const T& binary() const
             {

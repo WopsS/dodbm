@@ -26,6 +26,7 @@ namespace dodbm
 
                 enum class attribute : uint8_t
                 {
+                    none,
                     binary,
                     unsigned_normal, // Not zerofilled.
                     unsigned_zerofill,
