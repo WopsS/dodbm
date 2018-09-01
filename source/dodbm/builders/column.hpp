@@ -22,66 +22,68 @@ namespace dodbm
         {
         public:
 
-            using operation::operation;
+            using base_t = builders::operation<Operation>;
 
-            const T& max_length(uint64_t max_length) const
+            using base_t::operation;
+
+            const T& max_length(uint64_t max_length)
             {
-                m_operation->set_max_length(max_length);
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_max_length(max_length);
+                return *reinterpret_cast<const T*>(this);
             }
 
             const T& values(std::vector<std::string> values) const
             {
-                m_operation->set_values(std::move(values));
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_values(std::move(values));
+                return *reinterpret_cast<const T*>(this);
             }
 
             const T& default_value(dodbm::column_default value) const
             {
-                m_operation->set_default_value(value);
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_default_value(value);
+                return *reinterpret_cast<const T*>(this);
             }
 
             const T& default_value(const std::string& value) const
             {
-                m_operation->set_default_value(value);
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_default_value(value);
+                return *reinterpret_cast<const T*>(this);
             }
 
             const T& nullable() const
             {
-                m_operation->set_nullable(true);
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_nullable(true);
+                return *reinterpret_cast<const T*>(this);
             }
 
             const T& not_nullable() const
             {
-                m_operation->set_nullable(false);
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_nullable(false);
+                return *reinterpret_cast<const T*>(this);
             }
 
             const T& auto_incremented() const
             {
-                m_operation->set_auto_incremented(true);
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_auto_incremented(true);
+                return *reinterpret_cast<const T*>(this);
             }
 
             const T& not_auto_incremented() const
             {
-                m_operation->set_auto_incremented(false);
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_auto_incremented(false);
+                return *reinterpret_cast<const T*>(this);
             }
 
             const T& move_first() const
             {
-                m_operation->set_move_first();
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_move_first();
+                return *reinterpret_cast<const T*>(this);
             }
 
             const T& move_after(const std::string& column_name) const
             {
-                m_operation->set_move_after(column_name);
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_move_after(column_name);
+                return *reinterpret_cast<const T*>(this);
             }
 
             // Attributes.
@@ -110,8 +112,8 @@ namespace dodbm
 
             const T& attribute(dodbm::column_attribute attribute) const
             {
-                m_operation->set_attribute(attribute);
-                return *static_cast<const T*>(this);
+                base_t::m_operation->set_attribute(attribute);
+                return *reinterpret_cast<const T*>(this);
             }
         };
     }
