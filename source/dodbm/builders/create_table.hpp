@@ -2,6 +2,7 @@
 
 #include <functional>
 
+#include <dodbm/builders/columns.hpp>
 #include <dodbm/builders/operation.hpp>
 #include <dodbm/operations/create_table.hpp>
 
@@ -24,7 +25,7 @@ namespace dodbm
 
             using operation::operation;
 
-            const create_table& columns(std::function<void()> func);
+            const create_table& columns(std::function<void(columns_builder&)> func);
 
             const create_table& constraints(std::function<void()> func) const;
         };

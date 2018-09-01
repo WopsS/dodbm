@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include <dodbm/operation.hpp>
+
+#include <dodbm/operations/add_column.hpp>
 
 #include <dodbm/operations/helpers/has_collation.hpp>
 #include <dodbm/operations/helpers/has_comment.hpp>
@@ -24,6 +29,13 @@ namespace dodbm
             using has_name::has_name;
 
             type get_type() const final;
+
+            void set_columns(std::vector<std::shared_ptr<add_column>> columns);
+            const std::vector<std::shared_ptr<add_column>>& get_columns() const;
+
+        private:
+
+            std::vector<std::shared_ptr<add_column>> m_columns;
         };
     }
 }

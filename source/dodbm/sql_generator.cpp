@@ -42,6 +42,26 @@ dodbm::command dodbm::sql_generator::generate(operation& operation, const sql_ge
             auto& instance = *static_cast<operations::rename_table*>(&operation);
             return generate(instance, helper);
         }
+        case type::add_column:
+        {
+            auto& instance = *static_cast<operations::add_column*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::alter_column:
+        {
+            auto& instance = *static_cast<operations::alter_column*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::drop_column:
+        {
+            auto& instance = *static_cast<operations::drop_column*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::rename_column:
+        {
+            auto& instance = *static_cast<operations::rename_column*>(&operation);
+            return generate(instance, helper);
+        }
         default:
         {
             throw dodbm::exception("Unhandled operation type (" + std::to_string(static_cast<uint32_t>(operation.get_type())) + ")");
@@ -77,9 +97,13 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_database& 
 
     command result;
     result << "ALTER DATABASE "
-           << helper.delimit_identifier(operation.get_name())
-           << " DEFAULT CHARSET=" << charset
-           << " COLLATE=" << collation;
+           << helper.delimit_identifier(operation.get_name());
+
+    if (!collation.empty())
+    {
+        result << " ";
+        generate_collation(result, collation);
+    }
 
     return result;
 }
@@ -104,8 +128,8 @@ dodbm::command dodbm::sql_generator::generate(const operations::ensure_schema& o
 
     if (!collation.empty())
     {
-        result << " DEFAULT CHARSET=" << charset
-               << " COLLATE=" << collation;
+        result << " ";
+        generate_collation(result, collation);
     }
 
     return result;
@@ -136,9 +160,24 @@ dodbm::command dodbm::sql_generator::generate(const operations::create_table& op
     command result;
     result << "CREATE TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_name())
-           << " ()";
+           << " (";
 
-    // TODO: Append columns.
+    const auto& columns = operation.get_columns();
+    for (auto it = columns.begin(); it != columns.end(); ++it)
+    {
+        if (it != columns.begin())
+        {
+            result << ", ";
+        }
+
+        auto column = *it;
+        generate_column(result, helper, column->get_name(), column->get_column_type(), column->get_max_length(), column->get_values(), column->get_default_value(), column->get_collation(),
+                        column->get_attribute(), column->is_nullable(), column->is_auto_incremented(), column->get_comment());
+    }
+
+    result << ")";
+
+    // TODO: Append constraints.
 
     generate_table_options(result, helper, operation.get_engine(), operation.get_collation(), operation.get_comment());
 
@@ -165,21 +204,184 @@ dodbm::command dodbm::sql_generator::generate(const operations::rename_table& op
     return result;
 }
 
-void dodbm::sql_generator::generate_table_options(command& command, const sql_generator_helper& helper, const std::string& engine, const collation& collation, const std::string& comment)
+dodbm::command dodbm::sql_generator::generate(const operations::add_column& operation, const sql_generator_helper& helper)
 {
-    if (!engine.empty())
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " ADD COLUMN ";
+
+    generate_column(result, helper, operation.get_name(), operation.get_column_type(), operation.get_max_length(), operation.get_values(), operation.get_default_value(), operation.get_collation(),
+                    operation.get_attribute(), operation.is_nullable(), operation.is_auto_incremented(), operation.get_comment(), operation.get_move_first(), operation.get_move_after());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::alter_column& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " MODIFY COLUMN ";
+
+    generate_column(result, helper, operation.get_name(), operation.get_column_type(), operation.get_max_length(), operation.get_values(), operation.get_default_value(), operation.get_collation(),
+                    operation.get_attribute(), operation.is_nullable(), operation.is_auto_incremented(), operation.get_comment(), operation.get_move_first(), operation.get_move_after());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::drop_column& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " DROP COLUMN "
+           << helper.delimit_identifier(operation.get_name());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::rename_column& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " RENAME COLUMN "
+           << helper.delimit_identifier(operation.get_name())
+           << " TO "
+           << helper.delimit_identifier(operation.get_new_name());
+
+    return result;
+}
+
+void dodbm::sql_generator::generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& type, const size_t max_length,
+                                           const std::vector<std::string>& values, const std::string& default_value, const collation& collation, const dodbm::column_attribute attribute,
+                                           bool is_nullable, bool is_auto_incremented, const std::string& comment, bool move_first, const std::string& move_after)
+{
+    if (type.empty())
     {
-        command << " ENGINE=" << engine;
+        throw dodbm::exception("Column \"" + name + "\" require a valid type");
+    }
+
+    command << helper.delimit_identifier(name)
+            << " "
+            << type;
+
+    // Append values or length.
+    if (!values.empty())
+    {
+        command << "(";
+
+        for (auto it = values.begin(); it != values.end(); ++it)
+        {
+            if (it != values.begin())
+            {
+                command << ", ";
+            }
+
+            command << helper.escape_literal(*it);
+        }
+
+        command << ")";
+    }
+    else if (max_length > 0)
+    {
+        command << "(" << max_length << ")";
+    }
+
+    // Append the others.
+    switch (attribute)
+    {
+        case dodbm::column_attribute::binary:
+        {
+            command << " BINARY";
+            break;
+        }
+        case dodbm::column_attribute::on_update_current_timestamp:
+        {
+            command << " on update CURRENT_TIMESTAMP";
+            break;
+        }
+        case dodbm::column_attribute::unsigned_normal:
+        {
+            command << " UNSIGNED";
+            break;
+        }
+        case dodbm::column_attribute::unsigned_zerofill:
+        {
+            command << " UNSIGNED_ZEROFILL";
+            break;
+        }
     }
 
     if (!collation.empty())
     {
-        const auto& charset = collation.get_charset();
-        command << " DEFAULT CHARSET=" << charset << " COLLATE=" << collation;
+        command << " ";
+        generate_collation(command, collation);
+    }
+
+    if (is_nullable)
+    {
+        command << " NULL";
+    }
+    else
+    {
+        command << " NOT NULL";
+    }
+
+    if (!default_value.empty())
+    {
+        command << " DEFAULT " << helper.escape_literal(default_value);
+    }
+
+    if (is_auto_incremented)
+    {
+        command << " AUTO_INCREMENT";
     }
 
     if (!comment.empty())
     {
-        command << " COMMENT=" << helper.escape_literal(comment);
+        command << " ";
+        generate_comment(command, helper, comment);
     }
+
+    if (move_first)
+    {
+        command << " FIRST";
+    }
+    else if (!move_after.empty())
+    {
+        command << " AFTER " << helper.delimit_identifier(move_after);
+    }
+}
+
+void dodbm::sql_generator::generate_table_options(command& command, const sql_generator_helper& helper, const std::string& engine, const collation& collation, const std::string& comment)
+{
+    if (!engine.empty())
+    {
+        command << " ENGINE " << engine;
+    }
+
+    if (!collation.empty())
+    {
+        command << " ";
+        generate_collation(command, collation);
+    }
+
+    if (!comment.empty())
+    {
+        command << " ";
+        generate_comment(command, helper, comment);
+    }
+}
+
+void dodbm::sql_generator::generate_collation(command& command, const collation& collation)
+{
+    const auto& charset = collation.get_charset();
+    command << "CHARACTER SET " << charset << " COLLATE " << collation;
+}
+
+void dodbm::sql_generator::generate_comment(command& command, const sql_generator_helper& helper, const std::string& comment)
+{
+    command << "COMMENT " << helper.escape_literal(comment);
 }

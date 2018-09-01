@@ -18,7 +18,12 @@ namespace dodbm
             create_table,
             drop_table,
             alter_table,
-            rename_table
+            rename_table,
+
+            add_column,
+            drop_column,
+            alter_column,
+            rename_column
         };
 
         operation() = default;

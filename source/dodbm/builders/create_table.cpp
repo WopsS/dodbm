@@ -1,8 +1,12 @@
 #include <dodbm/builders/create_table.hpp>
 
-const dodbm::builders::create_table& dodbm::builders::create_table::columns(std::function<void()> func)
+const dodbm::builders::create_table& dodbm::builders::create_table::columns(std::function<void(columns_builder&)> func)
 {
-    func();
+    columns_builder builder;
+    func(builder);
+
+    m_operation->set_columns(std::move(builder.columns));
+
     return *this;
 }
 

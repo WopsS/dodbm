@@ -14,6 +14,11 @@
 #include <dodbm/builders/drop_table.hpp>
 #include <dodbm/builders/rename_table.hpp>
 
+#include <dodbm/builders/add_column.hpp>
+#include <dodbm/builders/alter_column.hpp>
+#include <dodbm/builders/drop_column.hpp>
+#include <dodbm/builders/rename_column.hpp>
+
 namespace dodbm
 {
     namespace builders
@@ -36,6 +41,29 @@ namespace dodbm
             builders::drop_table drop_table(const std::string& name);
             builders::alter_table alter_table(const std::string& name);
             builders::rename_table rename_table(const std::string& name);
+
+            template<typename T>
+            builders::add_column add_column(const std::string& name)
+            {
+                std::shared_ptr<operations::add_column> operation(new operations::add_column(name));
+                operation->set_column_type(T::name);
+
+                m_operations.emplace(operation);
+                return builders::add_column(operation);
+            }
+
+            template<typename T>
+            builders::alter_column alter_column(const std::string& name)
+            {
+                std::shared_ptr<operations::alter_column> operation(new operations::alter_column(name));
+                operation->set_column_type(T::name);
+
+                m_operations.emplace(operation);
+                return builders::alter_column(operation);
+            }
+
+            builders::drop_column drop_column(const std::string& name);
+            builders::rename_column rename_column(const std::string& name);
 
         private:
 

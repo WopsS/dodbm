@@ -60,3 +60,19 @@ dodbm::builders::rename_table dodbm::builders::migration::rename_table(const std
 
     return builders::rename_table(ptr);
 }
+
+dodbm::builders::drop_column dodbm::builders::migration::drop_column(const std::string& name)
+{
+    std::shared_ptr<operations::drop_column> ptr(new operations::drop_column(name));
+    m_operations.emplace(ptr);
+
+    return builders::drop_column(ptr);
+}
+
+dodbm::builders::rename_column dodbm::builders::migration::rename_column(const std::string& name)
+{
+    std::shared_ptr<operations::rename_column> ptr(new operations::rename_column(name));
+    m_operations.emplace(ptr);
+
+    return builders::rename_column(ptr);
+}

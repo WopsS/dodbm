@@ -15,6 +15,8 @@ namespace dodbm
 
         command& operator<<(const std::string& rhs);
 
+        command& operator<<(uint64_t rhs);
+
         const std::string get_text() const;
 
     private:

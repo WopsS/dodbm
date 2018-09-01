@@ -17,6 +17,11 @@
 #include <dodbm/operations/drop_table.hpp>
 #include <dodbm/operations/rename_table.hpp>
 
+#include <dodbm/operations/add_column.hpp>
+#include <dodbm/operations/alter_column.hpp>
+#include <dodbm/operations/drop_column.hpp>
+#include <dodbm/operations/rename_column.hpp>
+
 namespace dodbm
 {
     class sql_generator
@@ -41,6 +46,19 @@ namespace dodbm
         virtual command generate(const operations::drop_table& operation, const sql_generator_helper& helper);
         virtual command generate(const operations::rename_table& operation, const sql_generator_helper& helper);
 
+        virtual command generate(const operations::add_column& operation, const sql_generator_helper& helper);
+        virtual command generate(const operations::alter_column& operation, const sql_generator_helper& helper);
+        virtual command generate(const operations::drop_column& operation, const sql_generator_helper& helper);
+        virtual command generate(const operations::rename_column& operation, const sql_generator_helper& helper);
+
+        virtual void generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& type, const size_t max_length,
+                                     const std::vector<std::string>& values, const std::string& default_value, const collation& collation, const dodbm::column_attribute attribute,
+                                     bool is_nullable, bool is_auto_incremented, const std::string& comment, bool move_first = false, const std::string& move_after = "");
+
         virtual void generate_table_options(command& command, const sql_generator_helper& helper, const std::string& engine, const collation& collation, const std::string& comment);
+
+        virtual void generate_collation(command& command, const collation& collation);
+
+        virtual void generate_comment(command& command, const sql_generator_helper& helper, const std::string& comment);
     };
 }
