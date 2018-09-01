@@ -12,6 +12,7 @@ configuration:
 environment:
   bin_dir: $(APPVEYOR_BUILD_FOLDER)/build/$(configuration)/bin
   premake_dir: $(APPVEYOR_BUILD_FOLDER)/premake
+  scripts_dir: $(APPVEYOR_BUILD_FOLDER)/scripts
 
 platform:
   - x64
@@ -29,13 +30,8 @@ before_build:
   - ps: ./generate_vs_projects.bat
 
 test_script:
-  - ps: cd "$env:bin_dir"
-  - ps: >-
-      Get-ChildItem *-tests.exe | ForEach-Object
-      {
-        Write-Host $_.BaseName
-        Invoke-Expression $_.FullName
-      }
+  - ps: cd "$env:scripts_dir"
+  - ps: ./run_tests.ps1 $env:bin_dir
 
 artifacts:
   - path: build/$(configuration)/libs
