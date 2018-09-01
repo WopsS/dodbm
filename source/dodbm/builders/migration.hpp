@@ -19,6 +19,15 @@
 #include <dodbm/builders/drop_column.hpp>
 #include <dodbm/builders/rename_column.hpp>
 
+#include <dodbm/builders/add_primary_key.hpp>
+#include <dodbm/builders/drop_primary_key.hpp>
+
+#include <dodbm/builders/add_foreign_key.hpp>
+#include <dodbm/builders/drop_foreign_key.hpp>
+
+#include <dodbm/builders/add_unique_constraint.hpp>
+#include <dodbm/builders/drop_unique_constraint.hpp>
+
 namespace dodbm
 {
     namespace builders
@@ -64,6 +73,19 @@ namespace dodbm
 
             builders::drop_column drop_column(const std::string& name);
             builders::rename_column rename_column(const std::string& name);
+
+            builders::add_primary_key add_primary_key(const std::string& name = "");
+            builders::drop_primary_key drop_primary_key(const std::string& name = "");
+
+            builders::add_foreign_key add_foreign_key(const std::string& name = "");
+            builders::drop_foreign_key drop_foreign_key(const std::string& name);
+
+            builders::add_unique_constraint add_unique_constraint(const std::string& name = "");
+            builders::drop_unique_constraint drop_unique_constraint(const std::string& name);
+
+            void create_index(const std::string& name, std::initializer_list<std::string> columns, const std::string& table);
+            void drop_index(const std::string& name, const std::string& table);
+            void rename_index(const std::string& name, const std::string& table);
 
         private:
 

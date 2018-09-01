@@ -62,6 +62,36 @@ dodbm::command dodbm::sql_generator::generate(operation& operation, const sql_ge
             auto& instance = *static_cast<operations::rename_column*>(&operation);
             return generate(instance, helper);
         }
+        case type::add_primary_key:
+        {
+            auto& instance = *static_cast<operations::add_primary_key*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::drop_primary_key:
+        {
+            auto& instance = *static_cast<operations::drop_primary_key*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::add_foreign_key:
+        {
+            auto& instance = *static_cast<operations::add_foreign_key*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::drop_foreign_key:
+        {
+            auto& instance = *static_cast<operations::drop_foreign_key*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::add_unique_constraint:
+        {
+            auto& instance = *static_cast<operations::add_unique_constraint*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::drop_unique_constraint:
+        {
+            auto& instance = *static_cast<operations::drop_unique_constraint*>(&operation);
+            return generate(instance, helper);
+        }
         default:
         {
             throw dodbm::exception("Unhandled operation type (" + std::to_string(static_cast<uint32_t>(operation.get_type())) + ")");
@@ -175,9 +205,49 @@ dodbm::command dodbm::sql_generator::generate(const operations::create_table& op
                         column->get_attribute(), column->is_nullable(), column->is_auto_incremented(), column->get_comment());
     }
 
-    result << ")";
+    auto primary_key = operation.get_primary_key();
+    if (primary_key)
+    {
+        result << " ";
+        generate_primary_key(result, helper, primary_key->get_name(), primary_key->get_column(), primary_key->get_comment());
+    }
 
-    // TODO: Append constraints.
+    const auto& foreign_keys = operation.get_foreign_keys();
+    if (!foreign_keys.empty())
+    {
+        result << " ";
+
+        for (auto it = foreign_keys.begin(); it != foreign_keys.end(); it++)
+        {
+            auto foreign_key = *it;
+            if (it != foreign_keys.begin())
+            {
+                result << ", ";
+            }
+
+            generate_foreign_key(result, helper, foreign_key->get_name(), foreign_key->get_column(), foreign_key->get_in_schema(), foreign_key->get_from_table(), foreign_key->get_on_column(),
+                                 foreign_key->get_on_delete(), foreign_key->get_on_update());
+        }
+    }
+
+    const auto& unique_constraints = operation.get_unique_constraints();
+    if (!unique_constraints.empty())
+    {
+        result << " ";
+
+        for (auto it = unique_constraints.begin(); it != unique_constraints.end(); it++)
+        {
+            auto unique_constraint = *it;
+            if (it != unique_constraints.begin())
+            {
+                result << ", ";
+            }
+
+            generate_unique_constraint(result, helper, unique_constraint->get_name(), unique_constraint->get_columns(), unique_constraint->get_comment());
+        }
+    }
+
+    result << ")";
 
     generate_table_options(result, helper, operation.get_engine(), operation.get_collation(), operation.get_comment());
 
@@ -250,6 +320,75 @@ dodbm::command dodbm::sql_generator::generate(const operations::rename_column& o
            << helper.delimit_identifier(operation.get_name())
            << " TO "
            << helper.delimit_identifier(operation.get_new_name());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::add_primary_key& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " ADD ";
+
+    generate_primary_key(result, helper, operation.get_name(), operation.get_column(), operation.get_comment());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::drop_primary_key& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " DROP PRIMARY KEY";
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::add_foreign_key& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " ADD ";
+
+    generate_foreign_key(result, helper, operation.get_name(), operation.get_column(), operation.get_in_schema(), operation.get_from_table(), operation.get_on_column(), operation.get_on_delete(),
+                         operation.get_on_update());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::drop_foreign_key& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " DROP FOREIGN KEY "
+           << helper.delimit_identifier(operation.get_name());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::add_unique_constraint& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " ADD ";
+
+    generate_unique_constraint(result, helper, operation.get_name(), operation.get_columns(), operation.get_comment());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::drop_unique_constraint& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " DROP CONSTRAINT "
+           << helper.delimit_identifier(operation.get_name());
 
     return result;
 }
@@ -355,6 +494,19 @@ void dodbm::sql_generator::generate_column(command& command, const sql_generator
     }
 }
 
+void dodbm::sql_generator::generate_column_list(command& command, const sql_generator_helper& helper, const std::vector<std::string>& columns)
+{
+    for (auto it = columns.begin(); it != columns.end(); ++it)
+    {
+        if (it != columns.begin())
+        {
+            command << ", ";
+        }
+
+        command << helper.delimit_identifier(*it);
+    }
+}
+
 void dodbm::sql_generator::generate_table_options(command& command, const sql_generator_helper& helper, const std::string& engine, const collation& collation, const std::string& comment)
 {
     if (!engine.empty())
@@ -384,4 +536,68 @@ void dodbm::sql_generator::generate_collation(command& command, const collation&
 void dodbm::sql_generator::generate_comment(command& command, const sql_generator_helper& helper, const std::string& comment)
 {
     command << "COMMENT " << helper.escape_literal(comment);
+}
+
+void dodbm::sql_generator::generate_primary_key(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& column, const std::string& comment)
+{
+    command << "PRIMARY KEY";
+
+    if (!name.empty())
+    {
+        command << " " << helper.delimit_identifier(name);
+    }
+
+    command << " ("
+            << helper.delimit_identifier(column)
+            << ")";
+
+    if (!comment.empty())
+    {
+        command << " ";
+        generate_comment(command, helper, comment);
+    }
+}
+
+void dodbm::sql_generator::generate_foreign_key(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& column, const std::string& in_schema,
+                                                const std::string& from_table, const std::string& on_column, const std::string& on_delete, const std::string& on_update)
+{
+    command << "FOREIGN KEY";
+
+    if (!name.empty())
+    {
+        command << " " << helper.delimit_identifier(name);
+    }
+
+    command << " ("
+            << helper.delimit_identifier(column)
+            << ") REFERENCES "
+            << helper.delimit_identifier(in_schema, from_table)
+            << " ("
+            << helper.delimit_identifier(on_column)
+            << ") ON DELETE "
+            << on_delete
+            << " ON UPDATE "
+            << on_update;
+}
+
+void dodbm::sql_generator::generate_unique_constraint(command& command, const sql_generator_helper& helper, const std::string& name, const std::vector<std::string>& columns, const std::string& comment)
+{
+    command << "UNIQUE";
+
+    if (!name.empty())
+    {
+        command << " " << helper.delimit_identifier(name);
+    }
+
+    command << " (";
+
+    generate_column_list(command, helper, columns);
+
+    command << ")";
+
+    if (!comment.empty())
+    {
+        command << " ";
+        generate_comment(command, helper, comment);
+    }
 }

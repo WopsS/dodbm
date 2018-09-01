@@ -76,3 +76,51 @@ dodbm::builders::rename_column dodbm::builders::migration::rename_column(const s
 
     return builders::rename_column(ptr);
 }
+
+dodbm::builders::add_primary_key dodbm::builders::migration::add_primary_key(const std::string& name)
+{
+    std::shared_ptr<operations::add_primary_key> ptr(new operations::add_primary_key(name));
+    m_operations.emplace(ptr);
+
+    return builders::add_primary_key(ptr);
+}
+
+dodbm::builders::drop_primary_key dodbm::builders::migration::drop_primary_key(const std::string& name)
+{
+    std::shared_ptr<operations::drop_primary_key> ptr(new operations::drop_primary_key(name));
+    m_operations.emplace(ptr);
+
+    return builders::drop_primary_key(ptr);
+}
+
+dodbm::builders::add_foreign_key dodbm::builders::migration::add_foreign_key(const std::string& name)
+{
+    std::shared_ptr<operations::add_foreign_key> ptr(new operations::add_foreign_key(name));
+    m_operations.emplace(ptr);
+
+    return builders::add_foreign_key(ptr);
+}
+
+dodbm::builders::drop_foreign_key dodbm::builders::migration::drop_foreign_key(const std::string& name)
+{
+    std::shared_ptr<operations::drop_foreign_key> ptr(new operations::drop_foreign_key(name));
+    m_operations.emplace(ptr);
+
+    return builders::drop_foreign_key(ptr);
+}
+
+dodbm::builders::add_unique_constraint dodbm::builders::migration::add_unique_constraint(const std::string& name)
+{
+    std::shared_ptr<operations::add_unique_constraint> ptr(new operations::add_unique_constraint(name));
+    m_operations.emplace(ptr);
+
+    return builders::add_unique_constraint(ptr);
+}
+
+dodbm::builders::drop_unique_constraint dodbm::builders::migration::drop_unique_constraint(const std::string& name)
+{
+    std::shared_ptr<operations::drop_unique_constraint> ptr(new operations::drop_unique_constraint(name));
+    m_operations.emplace(ptr);
+
+    return builders::drop_unique_constraint(ptr);
+}

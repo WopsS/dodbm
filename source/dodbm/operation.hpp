@@ -23,7 +23,16 @@ namespace dodbm
             add_column,
             drop_column,
             alter_column,
-            rename_column
+            rename_column,
+
+            add_primary_key,
+            drop_primary_key,
+
+            add_foreign_key,
+            drop_foreign_key,
+
+            add_unique_constraint,
+            drop_unique_constraint
         };
 
         operation() = default;

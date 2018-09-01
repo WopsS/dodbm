@@ -12,7 +12,7 @@ namespace dodbm
             {
             public:
 
-                has_optional_name(const std::string& name);
+                has_optional_name(const std::string& name = "");
 
                 const std::string& get_name() const;
 
