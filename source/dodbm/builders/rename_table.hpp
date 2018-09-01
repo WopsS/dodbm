@@ -4,6 +4,7 @@
 #include <dodbm/operations/rename_table.hpp>
 
 #include <dodbm/builders/helpers/has_collation.hpp>
+#include <dodbm/builders/helpers/has_new_name.hpp>
 #include <dodbm/builders/helpers/has_schema.hpp>
 
 namespace dodbm
@@ -12,13 +13,12 @@ namespace dodbm
     {
         class rename_table : public builders::operation<operations::rename_table>
             , public helpers::has_collation<rename_table>
+            , public helpers::has_new_name<rename_table>
             , public helpers::has_schema<rename_table>
         {
         public:
 
             using operation::operation;
-
-            const rename_table& to(const std::string& name) const;
         };
     }
 }
