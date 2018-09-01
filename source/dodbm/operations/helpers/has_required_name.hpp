@@ -8,17 +8,17 @@ namespace dodbm
     {
         namespace helpers
         {
-            class has_name
+            class has_required_name
             {
             public:
 
-                has_name(const std::string& name);
+                has_required_name(const std::string& name);
 
                 const std::string& get_name() const;
 
             protected:
 
-                virtual ~has_name() = default;
+                virtual ~has_required_name() = default;
 
             private:
 

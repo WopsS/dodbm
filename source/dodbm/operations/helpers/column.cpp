@@ -1,7 +1,7 @@
 #include <dodbm/operations/helpers/column.hpp>
 
 dodbm::operations::helpers::column::column(const std::string& name)
-    : has_name(name)
+    : has_required_name(name)
     , m_max_length(0)
     , m_attribute(attribute::none)
     , m_is_nullable(false)

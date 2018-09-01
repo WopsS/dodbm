@@ -6,7 +6,7 @@
 
 #include <dodbm/operations/helpers/has_collation.hpp>
 #include <dodbm/operations/helpers/has_comment.hpp>
-#include <dodbm/operations/helpers/has_name.hpp>
+#include <dodbm/operations/helpers/has_required_name.hpp>
 #include <dodbm/operations/helpers/has_schema.hpp>
 #include <dodbm/operations/helpers/has_table.hpp>
 
@@ -18,7 +18,7 @@ namespace dodbm
         {
             class column : public helpers::has_collation
                 , public helpers::has_comment
-                , public helpers::has_name
+                , public helpers::has_required_name
                 , public helpers::has_schema
                 , public helpers::has_table
             {
