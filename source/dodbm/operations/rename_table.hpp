@@ -20,10 +20,6 @@ namespace dodbm
             using has_name::has_name;
 
             type get_type() const final;
-
-        private:
-
-            std::string m_new_name;
         };
     }
 }
