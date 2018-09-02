@@ -1,9 +1,5 @@
 include("find_mysql.lua")
 
-print(findmysqlheaderdir("x86_64"))
-print(findmysqllibdir("x86_64"))
-print(getmysqllib())
-
 project("mysql-provider-tests")
     kind("ConsoleApp")
     language("C++")

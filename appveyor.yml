@@ -21,14 +21,13 @@ pull_requests:
   do_not_increment_build_number: true
 
 install:
-  - git submodule update --init --recursive
+  - cmd: git submodule update --init --recursive
   - ps: appveyor DownloadFile https://github.com/premake/premake-core/releases/download/v5.0.0-alpha12/premake-5.0.0-alpha12-windows.zip
   - ps: 7z e premake-*-windows.zip -o"$env:premake_dir"
 
   - ps: appveyor DownloadFile https://downloads.mariadb.com/Connectors/c/connector-c-3.0.6/mariadb-connector-c-3.0.6-win64.msi
-  - msiexec /i mariadb-connector-c-3.0.6-win64.msi /quiet /qn -L*V log.txt
+  - cmd: msiexec /i mariadb-connector-c-3.0.6-win64.msi /quiet /qn
   - ps: Remove-Item mariadb-connector-c-3.0.6-win64.msi
-  - ps: Get-Content -Path log.txt
 
 before_build:
   - ps: cd $env:premake_dir
