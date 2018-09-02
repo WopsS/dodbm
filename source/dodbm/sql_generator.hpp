@@ -31,6 +31,10 @@
 #include <dodbm/operations/add_unique_constraint.hpp>
 #include <dodbm/operations/drop_unique_constraint.hpp>
 
+#include <dodbm/operations/create_index.hpp>
+#include <dodbm/operations/drop_index.hpp>
+#include <dodbm/operations/rename_index.hpp>
+
 namespace dodbm
 {
     class sql_generator
@@ -68,6 +72,10 @@ namespace dodbm
 
         virtual command generate(const operations::add_unique_constraint& operation, const sql_generator_helper& helper);
         virtual command generate(const operations::drop_unique_constraint& operation, const sql_generator_helper& helper);
+
+        virtual command generate(const operations::create_index& operation, const sql_generator_helper& helper);
+        virtual command generate(const operations::drop_index& operation, const sql_generator_helper& helper);
+        virtual command generate(const operations::rename_index& operation, const sql_generator_helper& helper);
 
         virtual void generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& type, const size_t max_length,
                                      const std::vector<std::string>& values, const std::string& default_value, const collation& collation, const dodbm::column_attribute attribute,

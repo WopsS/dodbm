@@ -92,6 +92,21 @@ dodbm::command dodbm::sql_generator::generate(operation& operation, const sql_ge
             auto& instance = *static_cast<operations::drop_unique_constraint*>(&operation);
             return generate(instance, helper);
         }
+        case type::create_index:
+        {
+            auto& instance = *static_cast<operations::create_index*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::drop_index:
+        {
+            auto& instance = *static_cast<operations::drop_index*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::rename_index:
+        {
+            auto& instance = *static_cast<operations::rename_index*>(&operation);
+            return generate(instance, helper);
+        }
         default:
         {
             throw dodbm::exception("Unhandled operation type (" + std::to_string(static_cast<uint32_t>(operation.get_type())) + ")");
@@ -389,6 +404,57 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_unique_cons
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " DROP CONSTRAINT "
            << helper.delimit_identifier(operation.get_name());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::create_index& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " ADD INDEX";
+
+    const auto& name = operation.get_name();
+    if (!name.empty())
+    {
+        result << " " << helper.delimit_identifier(name);
+    }
+
+    result << " (";
+    generate_column_list(result, helper, operation.get_columns());
+    result << ")";
+
+    const auto& comment = operation.get_comment();
+    if (!comment.empty())
+    {
+        result << " ";
+        generate_comment(result, helper, comment);
+    }
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::drop_index& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " DROP INDEX "
+           << helper.delimit_identifier(operation.get_name());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::rename_index& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "ALTER TABLE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " RENAME INDEX "
+           << helper.delimit_identifier(operation.get_name())
+           << " TO "
+           << helper.delimit_identifier(operation.get_new_name());
 
     return result;
 }

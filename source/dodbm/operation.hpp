@@ -32,7 +32,11 @@ namespace dodbm
             drop_foreign_key,
 
             add_unique_constraint,
-            drop_unique_constraint
+            drop_unique_constraint,
+
+            create_index,
+            drop_index,
+            rename_index
         };
 
         operation() = default;

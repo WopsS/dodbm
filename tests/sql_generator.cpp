@@ -24,6 +24,10 @@
 #include <dodbm/operations/add_unique_constraint.hpp>
 #include <dodbm/operations/drop_unique_constraint.hpp>
 
+#include <dodbm/operations/create_index.hpp>
+#include <dodbm/operations/drop_index.hpp>
+#include <dodbm/operations/rename_index.hpp>
+
 #include <mocks/collations.hpp>
 #include <mocks/provider.hpp>
 #include <mocks/storage_engines.hpp>
@@ -332,5 +336,48 @@ TEST_CASE("SQL generator")
 
         auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
         REQUIRE(command.get_text() == "ALTER TABLE `do`.`dbm` DROP CONSTRAINT `uc`");
+    }
+
+    //  Index
+    SECTION("create_index")
+    {
+        dodbm::operations::create_index operation("index");
+        operation.set_comment("Hello");
+        operation.set_schema("do");
+        operation.set_table("dbm");
+
+        SECTION("Single column")
+        {
+            operation.set_columns({ "col1" });
+
+            auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
+            REQUIRE(command.get_text() == "ALTER TABLE `do`.`dbm` ADD INDEX `index` (`col1`) COMMENT 'Hello'");
+        }
+        SECTION("Multiple columns")
+        {
+            operation.set_columns({ "col1", "col2", "col3" });
+
+            auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
+            REQUIRE(command.get_text() == "ALTER TABLE `do`.`dbm` ADD INDEX `index` (`col1`, `col2`, `col3`) COMMENT 'Hello'");
+        }
+    }
+    SECTION("drop_index")
+    {
+        dodbm::operations::drop_index operation("index");
+        operation.set_schema("do");
+        operation.set_table("dbm");
+
+        auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
+        REQUIRE(command.get_text() == "ALTER TABLE `do`.`dbm` DROP INDEX `index`");
+    }
+    SECTION("rename_index")
+    {
+        dodbm::operations::rename_index operation("index");
+        operation.set_new_name("new_name");
+        operation.set_schema("do");
+        operation.set_table("dbm");
+
+        auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
+        REQUIRE(command.get_text() == "ALTER TABLE `do`.`dbm` RENAME INDEX `index` TO `new_name`");
     }
 }

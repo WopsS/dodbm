@@ -124,3 +124,27 @@ dodbm::builders::drop_unique_constraint dodbm::builders::migration::drop_unique_
 
     return builders::drop_unique_constraint(ptr);
 }
+
+dodbm::builders::create_index dodbm::builders::migration::create_index(const std::string& name)
+{
+    std::shared_ptr<operations::create_index> ptr(new operations::create_index(name));
+    m_operations.emplace(ptr);
+
+    return builders::create_index(ptr);
+}
+
+dodbm::builders::drop_index dodbm::builders::migration::drop_index(const std::string& name)
+{
+    std::shared_ptr<operations::drop_index> ptr(new operations::drop_index(name));
+    m_operations.emplace(ptr);
+
+    return builders::drop_index(ptr);
+}
+
+dodbm::builders::rename_index dodbm::builders::migration::rename_index(const std::string& name)
+{
+    std::shared_ptr<operations::rename_index> ptr(new operations::rename_index(name));
+    m_operations.emplace(ptr);
+
+    return builders::rename_index(ptr);
+}

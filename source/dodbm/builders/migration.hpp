@@ -28,6 +28,10 @@
 #include <dodbm/builders/add_unique_constraint.hpp>
 #include <dodbm/builders/drop_unique_constraint.hpp>
 
+#include <dodbm/builders/create_index.hpp>
+#include <dodbm/builders/drop_index.hpp>
+#include <dodbm/builders/rename_index.hpp>
+
 namespace dodbm
 {
     namespace builders
@@ -83,9 +87,9 @@ namespace dodbm
             builders::add_unique_constraint add_unique_constraint(const std::string& name = "");
             builders::drop_unique_constraint drop_unique_constraint(const std::string& name);
 
-            void create_index(const std::string& name, std::initializer_list<std::string> columns, const std::string& table);
-            void drop_index(const std::string& name, const std::string& table);
-            void rename_index(const std::string& name, const std::string& table);
+            builders::create_index create_index(const std::string& name = "");
+            builders::drop_index drop_index(const std::string& name);
+            builders::rename_index rename_index(const std::string& name);
 
         private:
 
