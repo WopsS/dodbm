@@ -1,4 +1,5 @@
 #include <dodbm/db_value.hpp>
+#include <dodbm/exception.hpp>
 
 dodbm::db_value::db_value()
     : m_type(type::null)
@@ -154,6 +155,10 @@ dodbm::db_value::db_value(const db_value& other)
         {
             new (&string) auto(other.string);
             break;
+        }
+        default:
+        {
+            throw dodbm::exception("Unhandled DB value type (" + std::to_string(static_cast<uint32_t>(m_type)) + ")");
         }
     }
 }
