@@ -2,7 +2,9 @@
 
 const std::string dodbm::sql_generator_helper::escape_literal(const std::string& literal) const
 {
-    return "'" + literal + "'";
+    std::regex re("'");
+    auto result = std::regex_replace(literal, re, "\\$&");
+    return "'" + result + "'";
 }
 
 const std::string dodbm::sql_generator_helper::escape_value(const db_value& value) const

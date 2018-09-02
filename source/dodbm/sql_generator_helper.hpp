@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+#include <regex>
 #include <string>
 
 #include <dodbm/db_value.hpp>
