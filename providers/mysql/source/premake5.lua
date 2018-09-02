@@ -1,5 +1,3 @@
-include("find_mysql.lua")
-
 project("mysql-provider")
     kind("StaticLib")
     language("C++")
@@ -14,7 +12,7 @@ project("mysql-provider")
         sourcepath(basepath)
     })
 
-    if findmysqlheader ~= nil then
+    if findmysqlheaderdir ~= nil then
         filter({ "architecture:x86" })
             includedirs({ findmysqlheaderdir("x86") })
 

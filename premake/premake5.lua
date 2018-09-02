@@ -1,4 +1,6 @@
 require("premake", ">=5.0.0-alpha12")
+
+include("find_mysql.lua")
 include("version.lua")
 
 basepath = path.getdirectory(os.getcwd());

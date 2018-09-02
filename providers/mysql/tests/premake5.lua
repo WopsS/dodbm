@@ -1,5 +1,3 @@
-include("find_mysql.lua")
-
 project("mysql-provider-tests")
     kind("ConsoleApp")
     language("C++")
