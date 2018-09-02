@@ -10,7 +10,7 @@ const dodbm::builders::create_table& dodbm::builders::create_table::columns(std:
     return *this;
 }
 
-const dodbm::builders::create_table& dodbm::builders::create_table::constraints(std::function<void(constraints_builder)> func) const
+const dodbm::builders::create_table& dodbm::builders::create_table::constraints(std::function<void(constraints_builder&)> func) const
 {
     constraints_builder builder;
     func(builder);

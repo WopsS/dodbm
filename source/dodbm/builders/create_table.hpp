@@ -28,7 +28,7 @@ namespace dodbm
 
             const create_table& columns(std::function<void(columns_builder&)> func);
 
-            const create_table& constraints(std::function<void(constraints_builder)> func) const;
+            const create_table& constraints(std::function<void(constraints_builder&)> func) const;
         };
     }
 }
