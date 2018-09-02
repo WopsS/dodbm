@@ -1,7 +1,7 @@
 #include <dodbm/exception.hpp>
 #include <dodbm/sql_generator.hpp>
 
-dodbm::command dodbm::sql_generator::generate(operation& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(operation& operation, const sql_generator_helper& helper) const
 {
     using type = operation::type;
 
@@ -129,7 +129,7 @@ dodbm::command dodbm::sql_generator::generate(operation& operation, const sql_ge
     }
 }
 
-std::queue<dodbm::command> dodbm::sql_generator::generate(std::queue<std::shared_ptr<operation>> operations, const sql_generator_helper& helper)
+std::queue<dodbm::command> dodbm::sql_generator::generate(std::queue<std::shared_ptr<operation>> operations, const sql_generator_helper& helper) const
 {
     std::queue<command> commands;
 
@@ -144,7 +144,7 @@ std::queue<dodbm::command> dodbm::sql_generator::generate(std::queue<std::shared
     return commands;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::alter_database& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::alter_database& operation, const sql_generator_helper& helper) const
 {
     const auto& collation = operation.get_collation();
 
@@ -168,7 +168,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_database& 
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::drop_schema& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::drop_schema& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "DROP SCHEMA "
@@ -177,7 +177,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_schema& ope
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::ensure_schema& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::ensure_schema& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "CREATE SCHEMA IF NOT EXISTS "
@@ -193,7 +193,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::ensure_schema& o
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::alter_table& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::alter_table& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -213,7 +213,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_table& ope
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::create_table& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::create_table& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "CREATE TABLE "
@@ -282,7 +282,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::create_table& op
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::drop_table& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::drop_table& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "DROP TABLE "
@@ -291,7 +291,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_table& oper
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::rename_table& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::rename_table& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "RENAME TABLE "
@@ -302,7 +302,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::rename_table& op
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::add_column& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::add_column& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -315,7 +315,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::add_column& oper
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::alter_column& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::alter_column& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -328,7 +328,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_column& op
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::drop_column& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::drop_column& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -339,7 +339,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_column& ope
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::rename_column& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::rename_column& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -352,7 +352,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::rename_column& o
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::add_primary_key& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::add_primary_key& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -364,7 +364,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::add_primary_key&
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::drop_primary_key& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::drop_primary_key& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -374,7 +374,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_primary_key
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::add_foreign_key& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::add_foreign_key& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -387,7 +387,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::add_foreign_key&
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::drop_foreign_key& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::drop_foreign_key& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -398,7 +398,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_foreign_key
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::add_unique_constraint& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::add_unique_constraint& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -410,7 +410,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::add_unique_const
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::drop_unique_constraint& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::drop_unique_constraint& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -421,7 +421,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_unique_cons
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::create_index& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::create_index& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -448,7 +448,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::create_index& op
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::drop_index& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::drop_index& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -459,7 +459,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_index& oper
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::rename_index& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::rename_index& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "ALTER TABLE "
@@ -472,7 +472,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::rename_index& op
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::insert_data& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::insert_data& operation, const sql_generator_helper& helper) const
 {
     command result;
 
@@ -508,7 +508,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::insert_data& ope
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::delete_data& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::delete_data& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "DELETE FROM "
@@ -520,7 +520,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::delete_data& ope
     return result;
 }
 
-dodbm::command dodbm::sql_generator::generate(const operations::update_data& operation, const sql_generator_helper& helper)
+dodbm::command dodbm::sql_generator::generate(const operations::update_data& operation, const sql_generator_helper& helper) const
 {
     command result;
     result << "UPDATE "
@@ -553,7 +553,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::update_data& ope
 
 void dodbm::sql_generator::generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& type, const size_t max_length,
                                            const std::vector<std::string>& values, const std::string& default_value, const collation& collation, const dodbm::column_attribute attribute,
-                                           bool is_nullable, bool is_auto_incremented, const std::string& comment, bool move_first, const std::string& move_after)
+                                           bool is_nullable, bool is_auto_incremented, const std::string& comment, bool move_first, const std::string& move_after) const
 {
     if (type.empty())
     {
@@ -652,7 +652,7 @@ void dodbm::sql_generator::generate_column(command& command, const sql_generator
     }
 }
 
-void dodbm::sql_generator::generate_column_assignment(command& command, const sql_generator_helper& helper, const std::string& name, const db_value& value)
+void dodbm::sql_generator::generate_column_assignment(command& command, const sql_generator_helper& helper, const std::string& name, const db_value& value) const
 {
     command << helper.delimit_identifier(name)
             << " = "
@@ -664,7 +664,7 @@ void dodbm::sql_generator::generate_column_assignment(command& command, const sq
     }
 }
 
-void dodbm::sql_generator::generate_column_list(command& command, const sql_generator_helper& helper, const std::vector<std::string>& columns)
+void dodbm::sql_generator::generate_column_list(command& command, const sql_generator_helper& helper, const std::vector<std::string>& columns) const
 {
     for (auto it = columns.begin(); it != columns.end(); ++it)
     {
@@ -677,7 +677,7 @@ void dodbm::sql_generator::generate_column_list(command& command, const sql_gene
     }
 }
 
-void dodbm::sql_generator::generate_where(command& command, const sql_generator_helper& helper, const std::vector<dodbm::db_data>& data)
+void dodbm::sql_generator::generate_where(command& command, const sql_generator_helper& helper, const std::vector<dodbm::db_data>& data) const
 {
     command << "WHERE ";
 
@@ -695,18 +695,18 @@ void dodbm::sql_generator::generate_where(command& command, const sql_generator_
     }
 }
 
-void dodbm::sql_generator::generate_collation(command& command, const collation& collation)
+void dodbm::sql_generator::generate_collation(command& command, const collation& collation) const
 {
     const auto& charset = collation.get_charset();
     command << "CHARACTER SET " << charset << " COLLATE " << collation;
 }
 
-void dodbm::sql_generator::generate_comment(command& command, const sql_generator_helper& helper, const std::string& comment)
+void dodbm::sql_generator::generate_comment(command& command, const sql_generator_helper& helper, const std::string& comment) const
 {
     command << "COMMENT " << helper.escape_literal(comment);
 }
 
-void dodbm::sql_generator::generate_table_options(command& command, const sql_generator_helper& helper, const std::string& engine, const collation& collation, const std::string& comment)
+void dodbm::sql_generator::generate_table_options(command& command, const sql_generator_helper& helper, const std::string& engine, const collation& collation, const std::string& comment) const
 {
     if (!engine.empty())
     {
@@ -726,7 +726,7 @@ void dodbm::sql_generator::generate_table_options(command& command, const sql_ge
     }
 }
 
-void dodbm::sql_generator::generate_primary_key(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& column, const std::string& comment)
+void dodbm::sql_generator::generate_primary_key(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& column, const std::string& comment) const
 {
     command << "PRIMARY KEY";
 
@@ -747,7 +747,7 @@ void dodbm::sql_generator::generate_primary_key(command& command, const sql_gene
 }
 
 void dodbm::sql_generator::generate_foreign_key(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& column, const std::string& in_schema,
-                                                const std::string& from_table, const std::string& on_column, const std::string& on_delete, const std::string& on_update)
+                                                const std::string& from_table, const std::string& on_column, const std::string& on_delete, const std::string& on_update) const
 {
     command << "FOREIGN KEY";
 
@@ -768,7 +768,7 @@ void dodbm::sql_generator::generate_foreign_key(command& command, const sql_gene
             << on_update;
 }
 
-void dodbm::sql_generator::generate_unique_constraint(command& command, const sql_generator_helper& helper, const std::string& name, const std::vector<std::string>& columns, const std::string& comment)
+void dodbm::sql_generator::generate_unique_constraint(command& command, const sql_generator_helper& helper, const std::string& name, const std::vector<std::string>& columns, const std::string& comment) const
 {
     command << "UNIQUE";
 
