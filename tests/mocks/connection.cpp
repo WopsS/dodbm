@@ -12,11 +12,11 @@ void mocks::connection::rollback()
 {
 }
 
-void mocks::connection::execute_non_query(const std::string& text)
+void mocks::connection::execute_non_query(const std::string& text, const std::vector<dodbm::db_value>& parameters)
 {
 }
 
-dodbm::db_result mocks::connection::execute_query(const std::string& text)
+dodbm::db_result mocks::connection::execute_query(const std::string& text, const std::vector<dodbm::db_value>& parameters)
 {
     return dodbm::db_result({});
 }

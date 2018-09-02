@@ -107,6 +107,21 @@ dodbm::command dodbm::sql_generator::generate(operation& operation, const sql_ge
             auto& instance = *static_cast<operations::rename_index*>(&operation);
             return generate(instance, helper);
         }
+        case type::insert_data:
+        {
+            auto& instance = *static_cast<operations::insert_data*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::delete_data:
+        {
+            auto& instance = *static_cast<operations::delete_data*>(&operation);
+            return generate(instance, helper);
+        }
+        case type::update_data:
+        {
+            auto& instance = *static_cast<operations::update_data*>(&operation);
+            return generate(instance, helper);
+        }
         default:
         {
             throw dodbm::exception("Unhandled operation type (" + std::to_string(static_cast<uint32_t>(operation.get_type())) + ")");
@@ -459,6 +474,85 @@ dodbm::command dodbm::sql_generator::generate(const operations::rename_index& op
     return result;
 }
 
+dodbm::command dodbm::sql_generator::generate(const operations::insert_data& operation, const sql_generator_helper& helper)
+{
+    command result;
+
+    std::string columns;
+    std::string values;
+
+    const auto& data = operation.get_data();
+    for (auto it = data.begin(); it != data.end(); ++it)
+    {
+        const auto& current_data = *it;
+        const auto& value = current_data.value;
+
+        if (it != data.begin())
+        {
+            columns += ", ";
+            values += ", ";
+        }
+
+        columns += helper.delimit_identifier(current_data.column);
+        values += helper.escape_value(value);
+
+        if (value.is_string())
+        {
+            result.append_parameter(value);
+        }
+    }
+
+    result << "INSERT INTO "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << "(" << columns << ")"
+           << " VALUES (" << values << ")";
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::delete_data& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "DELETE FROM "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " ";
+
+    generate_where(result, helper, operation.get_where_data());
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::update_data& operation, const sql_generator_helper& helper)
+{
+    command result;
+    result << "UPDATE "
+           << helper.delimit_identifier(operation.get_schema(), operation.get_table())
+           << " SET ";
+
+    const auto& data = operation.get_data();
+    for (auto it = data.begin(); it != data.end(); ++it)
+    {
+        const auto& current_data = *it;
+        const auto& value = current_data.value;
+
+        if (it != data.begin())
+        {
+            result << ", ";
+        }
+
+        generate_column(result, helper, current_data.column, value);
+    }
+
+    const auto& where_data = operation.get_where_data();
+    if (!where_data.empty())
+    {
+        result << " ";
+        generate_where(result, helper, where_data);
+    }
+
+    return result;
+}
+
 void dodbm::sql_generator::generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& type, const size_t max_length,
                                            const std::vector<std::string>& values, const std::string& default_value, const collation& collation, const dodbm::column_attribute attribute,
                                            bool is_nullable, bool is_auto_incremented, const std::string& comment, bool move_first, const std::string& move_after)
@@ -557,6 +651,18 @@ void dodbm::sql_generator::generate_column(command& command, const sql_generator
     else if (!move_after.empty())
     {
         command << " AFTER " << helper.delimit_identifier(move_after);
+    }
+}
+
+void dodbm::sql_generator::generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const db_value& value)
+{
+    command << helper.delimit_identifier(name)
+            << " = "
+            << helper.escape_value(value);
+
+    if (value.is_string())
+    {
+        command.append_parameter(value);
     }
 }
 
@@ -665,5 +771,23 @@ void dodbm::sql_generator::generate_unique_constraint(command& command, const sq
     {
         command << " ";
         generate_comment(command, helper, comment);
+    }
+}
+
+void dodbm::sql_generator::generate_where(command& command, const sql_generator_helper& helper, const std::vector<dodbm::db_data>& data)
+{
+    command << "WHERE ";
+
+    for (auto it = data.begin(); it != data.end(); ++it)
+    {
+        const auto& current_data = *it;
+        const auto& value = current_data.value;
+
+        if (it != data.begin())
+        {
+            command << " AND ";
+        }
+
+        generate_column(command, helper, current_data.column, value);
     }
 }

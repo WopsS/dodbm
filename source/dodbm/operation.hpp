@@ -36,7 +36,11 @@ namespace dodbm
 
             create_index,
             drop_index,
-            rename_index
+            rename_index,
+
+            insert_data,
+            delete_data,
+            update_data
         };
 
         operation() = default;

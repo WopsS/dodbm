@@ -28,6 +28,10 @@
 #include <dodbm/operations/drop_index.hpp>
 #include <dodbm/operations/rename_index.hpp>
 
+#include <dodbm/operations/insert_data.hpp>
+#include <dodbm/operations/delete_data.hpp>
+#include <dodbm/operations/update_data.hpp>
+
 #include <mocks/collations.hpp>
 #include <mocks/provider.hpp>
 #include <mocks/storage_engines.hpp>
@@ -338,7 +342,7 @@ TEST_CASE("SQL generator")
         REQUIRE(command.get_text() == "ALTER TABLE `do`.`dbm` DROP CONSTRAINT `uc`");
     }
 
-    //  Index
+    //  Index.
     SECTION("create_index")
     {
         dodbm::operations::create_index operation("index");
@@ -379,5 +383,38 @@ TEST_CASE("SQL generator")
 
         auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
         REQUIRE(command.get_text() == "ALTER TABLE `do`.`dbm` RENAME INDEX `index` TO `new_name`");
+    }
+
+    //  Data.
+    SECTION("insert_data")
+    {
+        dodbm::operations::insert_data operation({ { "col1", 1 }, { "col2", true }, { "col3", "hello" } });
+        operation.set_schema("do");
+        operation.set_table("dbm");
+
+        auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
+        REQUIRE(command.get_text() == "INSERT INTO `do`.`dbm`(`col1`, `col2`, `col3`) VALUES (1, 1, ?)");
+    }
+    SECTION("delete_data")
+    {
+        dodbm::operations::delete_data operation;
+        operation.set_where_data({ { "col1", 1 }, { "col2", true }, { "col3", "hello" } });
+        operation.set_schema("do");
+        operation.set_table("dbm");
+
+        auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
+        REQUIRE(command.get_text() == "DELETE FROM `do`.`dbm` WHERE `col1` = 1 AND `col2` = 1 AND `col3` = ?");
+    }
+    SECTION("update_data")
+    {
+        dodbm::operations::update_data operation;
+        operation.set_schema("do");
+        operation.set_table("dbm");
+
+        operation.set_data({ { "col1", 2 }, { "col2", false }, { "col3", "bye" } });
+        operation.set_where_data({ { "col1", 1 }, { "col2", true }, { "col3", "hello" } });
+
+        auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
+        REQUIRE(command.get_text() == "UPDATE `do`.`dbm` SET `col1` = 2, `col2` = 0, `col3` = ? WHERE `col1` = 1 AND `col2` = 1 AND `col3` = ?");
     }
 }

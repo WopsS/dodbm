@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include <dodbm/db_value.hpp>
+
 namespace dodbm
 {
     class sql_generator_helper
@@ -12,6 +14,8 @@ namespace dodbm
         virtual ~sql_generator_helper() = default;
 
         virtual const std::string escape_literal(const std::string& literal) const;
+
+        virtual const std::string escape_value(const db_value& value) const;
 
         virtual const std::string delimit_identifier(const std::string& identifier) const;
 

@@ -3,6 +3,7 @@
 #include <memory>
 #include <queue>
 
+#include <dodbm/db_value.hpp>
 #include <dodbm/operation.hpp>
 
 #include <dodbm/builders/alter_database.hpp>
@@ -31,6 +32,10 @@
 #include <dodbm/builders/create_index.hpp>
 #include <dodbm/builders/drop_index.hpp>
 #include <dodbm/builders/rename_index.hpp>
+
+#include <dodbm/builders/insert_data.hpp>
+#include <dodbm/builders/delete_data.hpp>
+#include <dodbm/builders/update_data.hpp>
 
 namespace dodbm
 {
@@ -61,7 +66,7 @@ namespace dodbm
                 std::shared_ptr<operations::add_column> operation(new operations::add_column(name));
                 operation->set_column_type(T::name);
 
-                m_operations.emplace(operation);
+                operations.emplace(operation);
                 return builders::add_column(operation);
             }
 
@@ -71,7 +76,7 @@ namespace dodbm
                 std::shared_ptr<operations::alter_column> operation(new operations::alter_column(name));
                 operation->set_column_type(T::name);
 
-                m_operations.emplace(operation);
+                operations.emplace(operation);
                 return builders::alter_column(operation);
             }
 
@@ -90,6 +95,31 @@ namespace dodbm
             builders::create_index create_index(const std::string& name = "");
             builders::drop_index drop_index(const std::string& name);
             builders::rename_index rename_index(const std::string& name);
+
+            template<typename T>
+            builders::insert_data insert_data(const std::string& column, const T& value)
+            {
+                return insert_data({ { column, value } });
+            }
+
+            builders::insert_data insert_data(std::initializer_list<db_data> data);
+
+            template<typename T>
+            builders::delete_data delete_data(const std::string& where_column, const T& where_value)
+            {
+                return delete_data({ { where_column, where_value } });
+            }
+
+            builders::delete_data delete_data(std::initializer_list<db_data> where_data);
+
+
+            template<typename T>
+            builders::update_data update_data(const std::string& where_column, const T& where_value)
+            {
+                return update_data({ { where_column, where_value } });
+            }
+
+            builders::update_data update_data(std::initializer_list<db_data> where_data);
 
         private:
 

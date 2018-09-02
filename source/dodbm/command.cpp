@@ -12,7 +12,17 @@ dodbm::command& dodbm::command::operator<<(uint64_t rhs)
     return *this;
 }
 
-const std::string dodbm::command::get_text() const
+void dodbm::command::append_parameter(db_value value)
+{
+    m_paramters.emplace_back(value);
+}
+
+const std::vector<dodbm::db_value>& dodbm::command::get_parameters() const
+{
+    return m_paramters;
+}
+
+const std::string& dodbm::command::get_text() const
 {
     return m_text;
 }

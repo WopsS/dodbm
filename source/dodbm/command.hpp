@@ -1,8 +1,9 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
-#include <dodbm/db_result.hpp>
+#include <dodbm/db_value.hpp>
 
 namespace dodbm
 {
@@ -17,10 +18,15 @@ namespace dodbm
 
         command& operator<<(uint64_t rhs);
 
-        const std::string get_text() const;
+        void append_parameter(db_value value);
+        const std::vector<db_value>& get_parameters() const;
+
+        const std::string& get_text() const;
 
     private:
 
         std::string m_text;
+
+        std::vector<db_value> m_paramters;
     };
 }

@@ -143,3 +143,29 @@ dodbm::builders::rename_index dodbm::builders::migration::rename_index(const std
 
     return builders::rename_index(ptr);
 }
+
+dodbm::builders::insert_data dodbm::builders::migration::insert_data(std::initializer_list<db_data> data)
+{
+    std::shared_ptr<operations::insert_data> ptr(new operations::insert_data(data));
+    operations.emplace(ptr);
+
+    return builders::insert_data(ptr);
+}
+
+dodbm::builders::delete_data dodbm::builders::migration::delete_data(std::initializer_list<db_data> where_data)
+{
+    std::shared_ptr<operations::delete_data> ptr(new operations::delete_data());
+    ptr->set_where_data(where_data);
+
+    operations.emplace(ptr);
+    return builders::delete_data(ptr);
+}
+
+dodbm::builders::update_data dodbm::builders::migration::update_data(std::initializer_list<db_data> where_data)
+{
+    std::shared_ptr<operations::update_data> ptr(new operations::update_data());
+    ptr->set_where_data(where_data);
+
+    operations.emplace(ptr);
+    return builders::update_data(ptr);
+}
