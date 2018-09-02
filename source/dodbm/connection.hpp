@@ -12,7 +12,7 @@ namespace dodbm
     public:
 
         connection() = default;
-        ~connection() = default;
+        virtual ~connection() = default;
 
         virtual void start_transaction() = 0;
         virtual void commit() = 0;
