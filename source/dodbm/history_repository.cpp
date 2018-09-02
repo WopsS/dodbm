@@ -25,7 +25,7 @@ const std::string dodbm::history_repository::get_last_applied_migration(connecti
     auto query_result = connection->execute_query(command.get_text());
     if (!query_result.empty())
     {
-        return query_result.first().get("name").as_string();
+        return query_result.first().get("name").get_string();
     }
 
     return "";
