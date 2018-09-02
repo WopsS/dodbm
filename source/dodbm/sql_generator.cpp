@@ -236,14 +236,14 @@ dodbm::command dodbm::sql_generator::generate(const operations::create_table& op
     auto primary_key = operation.get_primary_key();
     if (primary_key)
     {
-        result << " ";
+        result << ", ";
         generate_primary_key(result, helper, primary_key->get_name(), primary_key->get_column(), primary_key->get_comment());
     }
 
     const auto& foreign_keys = operation.get_foreign_keys();
     if (!foreign_keys.empty())
     {
-        result << " ";
+        result << ", ";
 
         for (auto it = foreign_keys.begin(); it != foreign_keys.end(); it++)
         {
@@ -261,7 +261,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::create_table& op
     const auto& unique_constraints = operation.get_unique_constraints();
     if (!unique_constraints.empty())
     {
-        result << " ";
+        result << ", ";
 
         for (auto it = unique_constraints.begin(); it != unique_constraints.end(); it++)
         {
