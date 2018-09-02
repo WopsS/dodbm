@@ -40,7 +40,9 @@ namespace dodbm
 
             insert_data,
             delete_data,
-            update_data
+            update_data,
+
+            custom_sql
         };
 
         operation() = default;

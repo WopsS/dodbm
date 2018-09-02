@@ -39,6 +39,8 @@
 #include <dodbm/operations/delete_data.hpp>
 #include <dodbm/operations/update_data.hpp>
 
+#include <dodbm/operations/custom_sql.hpp>
+
 namespace dodbm
 {
     class sql_generator
@@ -84,6 +86,8 @@ namespace dodbm
         virtual command generate(const operations::insert_data& operation, const sql_generator_helper& helper) const;
         virtual command generate(const operations::delete_data& operation, const sql_generator_helper& helper) const;
         virtual command generate(const operations::update_data& operation, const sql_generator_helper& helper) const;
+
+        virtual command generate(const operations::custom_sql& operation, const sql_generator_helper& helper) const;
 
         virtual void generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& type, const size_t max_length,
                                      const std::vector<std::string>& values, const std::string& default_value, const collation& collation, const dodbm::column_attribute attribute,

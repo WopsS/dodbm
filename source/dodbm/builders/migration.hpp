@@ -121,6 +121,8 @@ namespace dodbm
 
             builders::update_data update_data(std::initializer_list<db_data> where_data);
 
+            void execute(const std::string& sql);
+
         private:
 
             friend class dodbm::migration;

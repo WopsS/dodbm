@@ -32,6 +32,8 @@
 #include <dodbm/operations/delete_data.hpp>
 #include <dodbm/operations/update_data.hpp>
 
+#include <dodbm/operations/custom_sql.hpp>
+
 #include <mocks/collations.hpp>
 #include <mocks/provider.hpp>
 #include <mocks/storage_engines.hpp>
@@ -416,5 +418,14 @@ TEST_CASE("SQL generator")
 
         auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
         REQUIRE(command.get_text() == "UPDATE `do`.`dbm` SET `col1` = 2, `col2` = 0, `col3` = ? WHERE `col1` = 1 AND `col2` = 1 AND `col3` = ?");
+    }
+
+    // Custom SQL.
+    SECTION("custom_sql")
+    {
+        dodbm::operations::custom_sql operation("SELECT * FROM `do`.`dbm`");
+
+        auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(&operation), helper);
+        REQUIRE(command.get_text() == "SELECT * FROM `do`.`dbm`");
     }
 }

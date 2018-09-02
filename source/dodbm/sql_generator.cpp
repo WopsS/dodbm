@@ -122,6 +122,11 @@ dodbm::command dodbm::sql_generator::generate(operation& operation, const sql_ge
             auto& instance = *static_cast<operations::update_data*>(&operation);
             return generate(instance, helper);
         }
+        case type::custom_sql:
+        {
+            auto& instance = *static_cast<operations::custom_sql*>(&operation);
+            return generate(instance, helper);
+        }
         default:
         {
             throw dodbm::exception("Unhandled operation type (" + std::to_string(static_cast<uint32_t>(operation.get_type())) + ")");
@@ -547,6 +552,14 @@ dodbm::command dodbm::sql_generator::generate(const operations::update_data& ope
         result << " ";
         generate_where(result, helper, where_data);
     }
+
+    return result;
+}
+
+dodbm::command dodbm::sql_generator::generate(const operations::custom_sql& operation, const sql_generator_helper& helper) const
+{
+    command result;
+    result << operation.get_sql();
 
     return result;
 }

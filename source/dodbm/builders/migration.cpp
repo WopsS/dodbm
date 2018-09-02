@@ -1,6 +1,7 @@
 #include <dodbm/builders/migration.hpp>
 #include <dodbm/exception.hpp>
 
+#include <dodbm/operations/custom_sql.hpp>
 #include <dodbm/operations/drop_schema.hpp>
 
 dodbm::builders::alter_database dodbm::builders::migration::alter_database(const std::string& name)
@@ -168,4 +169,9 @@ dodbm::builders::update_data dodbm::builders::migration::update_data(std::initia
 
     operations.emplace(ptr);
     return builders::update_data(ptr);
+}
+
+void dodbm::builders::migration::execute(const std::string& sql)
+{
+    operations.emplace(new operations::custom_sql(sql));
 }
