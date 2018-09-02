@@ -179,13 +179,11 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_schema& ope
 
 dodbm::command dodbm::sql_generator::generate(const operations::ensure_schema& operation, const sql_generator_helper& helper)
 {
-    const auto& collation = operation.get_collation();
-    const auto& charset = collation.get_charset();
-
     command result;
     result << "CREATE SCHEMA IF NOT EXISTS "
            << helper.delimit_identifier(operation.get_name());
 
+    const auto& collation = operation.get_collation();
     if (!collation.empty())
     {
         result << " ";
@@ -540,7 +538,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::update_data& ope
             result << ", ";
         }
 
-        generate_column(result, helper, current_data.column, value);
+        generate_column_assignment(result, helper, current_data.column, value);
     }
 
     const auto& where_data = operation.get_where_data();
@@ -654,7 +652,7 @@ void dodbm::sql_generator::generate_column(command& command, const sql_generator
     }
 }
 
-void dodbm::sql_generator::generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const db_value& value)
+void dodbm::sql_generator::generate_column_assignment(command& command, const sql_generator_helper& helper, const std::string& name, const db_value& value)
 {
     command << helper.delimit_identifier(name)
             << " = "
@@ -679,6 +677,35 @@ void dodbm::sql_generator::generate_column_list(command& command, const sql_gene
     }
 }
 
+void dodbm::sql_generator::generate_where(command& command, const sql_generator_helper& helper, const std::vector<dodbm::db_data>& data)
+{
+    command << "WHERE ";
+
+    for (auto it = data.begin(); it != data.end(); ++it)
+    {
+        const auto& current_data = *it;
+        const auto& value = current_data.value;
+
+        if (it != data.begin())
+        {
+            command << " AND ";
+        }
+
+        generate_column_assignment(command, helper, current_data.column, value);
+    }
+}
+
+void dodbm::sql_generator::generate_collation(command& command, const collation& collation)
+{
+    const auto& charset = collation.get_charset();
+    command << "CHARACTER SET " << charset << " COLLATE " << collation;
+}
+
+void dodbm::sql_generator::generate_comment(command& command, const sql_generator_helper& helper, const std::string& comment)
+{
+    command << "COMMENT " << helper.escape_literal(comment);
+}
+
 void dodbm::sql_generator::generate_table_options(command& command, const sql_generator_helper& helper, const std::string& engine, const collation& collation, const std::string& comment)
 {
     if (!engine.empty())
@@ -697,17 +724,6 @@ void dodbm::sql_generator::generate_table_options(command& command, const sql_ge
         command << " ";
         generate_comment(command, helper, comment);
     }
-}
-
-void dodbm::sql_generator::generate_collation(command& command, const collation& collation)
-{
-    const auto& charset = collation.get_charset();
-    command << "CHARACTER SET " << charset << " COLLATE " << collation;
-}
-
-void dodbm::sql_generator::generate_comment(command& command, const sql_generator_helper& helper, const std::string& comment)
-{
-    command << "COMMENT " << helper.escape_literal(comment);
 }
 
 void dodbm::sql_generator::generate_primary_key(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& column, const std::string& comment)
@@ -771,23 +787,5 @@ void dodbm::sql_generator::generate_unique_constraint(command& command, const sq
     {
         command << " ";
         generate_comment(command, helper, comment);
-    }
-}
-
-void dodbm::sql_generator::generate_where(command& command, const sql_generator_helper& helper, const std::vector<dodbm::db_data>& data)
-{
-    command << "WHERE ";
-
-    for (auto it = data.begin(); it != data.end(); ++it)
-    {
-        const auto& current_data = *it;
-        const auto& value = current_data.value;
-
-        if (it != data.begin())
-        {
-            command << " AND ";
-        }
-
-        generate_column(command, helper, current_data.column, value);
     }
 }

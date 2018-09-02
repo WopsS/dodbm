@@ -89,15 +89,17 @@ namespace dodbm
                                      const std::vector<std::string>& values, const std::string& default_value, const collation& collation, const dodbm::column_attribute attribute,
                                      bool is_nullable, bool is_auto_incremented, const std::string& comment, bool move_first = false, const std::string& move_after = "");
 
-        virtual void generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const db_value& value);
+        virtual void generate_column_assignment(command& command, const sql_generator_helper& helper, const std::string& name, const db_value& value);
 
         virtual void generate_column_list(command& command, const sql_generator_helper& helper, const std::vector<std::string>& columns);
 
-        virtual void generate_table_options(command& command, const sql_generator_helper& helper, const std::string& engine, const collation& collation, const std::string& comment);
+        virtual void generate_where(command& command, const sql_generator_helper& helper, const std::vector<dodbm::db_data>& data);
 
         virtual void generate_collation(command& command, const collation& collation);
 
         virtual void generate_comment(command& command, const sql_generator_helper& helper, const std::string& comment);
+
+        virtual void generate_table_options(command& command, const sql_generator_helper& helper, const std::string& engine, const collation& collation, const std::string& comment);
 
         virtual void generate_primary_key(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& column, const std::string& comment);
 
@@ -105,7 +107,5 @@ namespace dodbm
                                           const std::string& from_table, const std::string& on_column, const std::string& on_delete, const std::string& on_update);
 
         virtual void generate_unique_constraint(command& command, const sql_generator_helper& helper, const std::string& name, const std::vector<std::string>& columns, const std::string& comment);
-
-        virtual void generate_where(command& command, const sql_generator_helper& helper, const std::vector<dodbm::db_data>& data);
     };
 }
