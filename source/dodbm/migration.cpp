@@ -5,7 +5,7 @@ std::queue<std::shared_ptr<dodbm::operation>> dodbm::migration::get_up_operation
     migration_builder builder;
     up(builder);
 
-    return builder.get_operations();
+    return builder.operations;
 }
 
 std::queue<std::shared_ptr<dodbm::operation>> dodbm::migration::get_down_operations()
@@ -13,5 +13,5 @@ std::queue<std::shared_ptr<dodbm::operation>> dodbm::migration::get_down_operati
     migration_builder builder;
     down(builder);
 
-    return builder.get_operations();
+    return builder.operations;
 }

@@ -34,6 +34,8 @@
 
 namespace dodbm
 {
+    class migration;
+
     namespace builders
     {
         class migration
@@ -42,8 +44,6 @@ namespace dodbm
 
             migration() = default;
             ~migration() = default;
-
-            std::queue<std::shared_ptr<dodbm::operation>> get_operations() const;
 
             builders::alter_database alter_database(const std::string& name);
 
@@ -93,7 +93,9 @@ namespace dodbm
 
         private:
 
-            std::queue<std::shared_ptr<dodbm::operation>> m_operations;
+            friend class dodbm::migration;
+
+            std::queue<std::shared_ptr<dodbm::operation>> operations;
         };
     }
 
