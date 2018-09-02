@@ -1,3 +1,5 @@
+include("find_mysql.lua")
+
 project("mysql-provider-tests")
     kind("ConsoleApp")
     language("C++")
@@ -11,6 +13,22 @@ project("mysql-provider-tests")
         sourcepath(providerspath("mysql")),
         testspath(providerspath("mysql"))
     })
+
+    filter({ "architecture:x86" })
+        includedirs({ findmysqlheader("x86") })
+
+    filter({ "architecture:x86_64" })
+        includedirs({ findmysqlheader("x86_64") })
+
+    filter({ "architecture:x86", "system:windows" })
+        libdirs({ findmysqllib("x86") })
+
+    filter({ "architecture:x86_64", "system:windows" })
+        libdirs({ findmysqllib("x86_64") })
+
+    filter({})
+
+    links({ "mariadbclient" })
 
     files({  "**.cpp", "**.hpp" })
     links({ "dodbm", "mysql-provider" })
