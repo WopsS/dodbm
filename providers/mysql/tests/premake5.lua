@@ -28,7 +28,7 @@ project("mysql-provider-tests")
 
     filter({})
 
-    links({ "mariadbclient" })
+    links({ getmysqllib() })
 
     files({  "**.cpp", "**.hpp" })
     links({ "dodbm", "mysql-provider" })

@@ -22,17 +22,7 @@ project("mysql-provider")
             includedirs({ findmysqlheader("x86_64") })
     end
 
-    if findmysqllib ~= nil then
-        filter({ "architecture:x86", "system:windows" })
-            libdirs({ findmysqllib("x86") })
-
-        filter({ "architecture:x86_64", "system:windows" })
-            libdirs({ findmysqllib("x86_64") })
-    end
-
     filter({})
-
-    links({ "mariadbclient" })
 
     files({  "**.cpp", "**.hpp" })
 
