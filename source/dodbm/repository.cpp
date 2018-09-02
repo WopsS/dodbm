@@ -6,10 +6,14 @@
 dodbm::repository::repository(std::unique_ptr<provider> provider)
     : m_provider(std::move(provider))
 {
+    auto connection = m_provider->get_connection();
     auto history = m_provider->get_history_repository();
-    if (!history.exists())
+    auto helper = m_provider->get_sql_generator_helper();
+
+    if (!history.exists(connection, helper))
     {
-        history.create();
+        auto generator = m_provider->get_sql_generator();
+        history.create(connection, generator, helper);
     }
 }
 
@@ -43,8 +47,7 @@ void dodbm::repository::migrate()
             throw dodbm::exception("Up operations for \"" + name + "\" is empty");
         }
 
-        // TODO: Insert migration in history.
-        //operations.emplace(history.get_insert_operation(name));
+        operations.emplace(history.get_insert_operation(name));
 
         auto generator = m_provider->get_sql_generator();
         auto commands = generator.generate(operations, helper);
@@ -90,8 +93,8 @@ void dodbm::repository::rollback(const std::string& name, migration* migration)
         throw dodbm::exception("Down operations for \"" + name + "\" is empty");
     }
 
-    // TODO: Remove migration from history.
-    //operations.emplace(history.get_delete_operation(name));
+    auto history = m_provider->get_history_repository();
+    operations.emplace(history.get_delete_operation(name));
 
     auto generator = m_provider->get_sql_generator();
     auto commands = generator.generate(operations, helper);

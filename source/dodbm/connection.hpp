@@ -20,5 +20,7 @@ namespace dodbm
 
         virtual void execute_non_query(const std::string& text, const std::vector<db_value>& parameters = {}) = 0;
         virtual db_result execute_query(const std::string& text, const std::vector<db_value>& parameters = {}) = 0;
+
+        virtual std::string get_schema_name() = 0;
     };
 }

@@ -14,5 +14,7 @@ namespace mocks
 
         virtual void execute_non_query(const std::string& text, const std::vector<dodbm::db_value>& parameters = {}) override;
         virtual dodbm::db_result execute_query(const std::string& text, const std::vector<dodbm::db_value>& parameters = {}) override;
+
+        virtual std::string get_schema_name() override;
     };
 }
