@@ -9,7 +9,7 @@ local function getwindowspaths(arch)
     return paths
 end
 
-function findmysqlheader(arch)
+function findmysqlheaderdir(arch)
     local path = os.findheader("mysql/mysql.h")
     if path == nil then
         path = os.findheader("mariadb/mysql.h")
@@ -30,7 +30,7 @@ function findmysqlheader(arch)
     return path
 end
 
-function findmysqllib(arch)
+function findmysqllibdir(arch)
     local path = nil
 
     if os.istarget("windows") then

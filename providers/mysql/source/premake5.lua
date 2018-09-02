@@ -16,10 +16,10 @@ project("mysql-provider")
 
     if findmysqlheader ~= nil then
         filter({ "architecture:x86" })
-            includedirs({ findmysqlheader("x86") })
+            includedirs({ findmysqlheaderdir("x86") })
 
         filter({ "architecture:x86_64" })
-            includedirs({ findmysqlheader("x86_64") })
+            includedirs({ findmysqlheaderdir("x86_64") })
     end
 
     filter({})

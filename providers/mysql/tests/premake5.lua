@@ -15,16 +15,16 @@ project("mysql-provider-tests")
     })
 
     filter({ "architecture:x86" })
-        includedirs({ findmysqlheader("x86") })
+        includedirs({ findmysqlheaderdir("x86") })
 
     filter({ "architecture:x86_64" })
-        includedirs({ findmysqlheader("x86_64") })
+        includedirs({ findmysqlheaderdir("x86_64") })
 
     filter({ "architecture:x86", "system:windows" })
-        libdirs({ findmysqllib("x86") })
+        libdirs({ findmysqllibdir("x86") })
 
     filter({ "architecture:x86_64", "system:windows" })
-        libdirs({ findmysqllib("x86_64") })
+        libdirs({ findmysqllibdir("x86_64") })
 
     filter({})
 
