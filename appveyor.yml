@@ -28,7 +28,7 @@ install:
   - ps: appveyor DownloadFile https://downloads.mariadb.com/Connectors/c/connector-c-3.0.6/mariadb-connector-c-3.0.6-win64.msi
   - ps: msiexec /i mariadb-connector-c-3.0.6-win64.msi /quiet /qn -L*V log.txt
   - ps: Remove-Item mariadb-connector-c-3.0.6-win64.msi
-  - ps: Get-Content -Path ./log.txt
+  - ps: Get-Content -Path log.txt
 
 before_build:
   - ps: cd $env:premake_dir
