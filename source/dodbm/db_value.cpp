@@ -286,8 +286,8 @@ void dodbm::db_value::operator=(uint16_t rhs)
 
 void dodbm::db_value::operator=(int32_t rhs)
 {
-    uint32 = rhs;
-    m_type = type::uint32;
+    int32 = rhs;
+    m_type = type::int32;
 }
 
 void dodbm::db_value::operator=(uint32_t rhs)
@@ -298,8 +298,8 @@ void dodbm::db_value::operator=(uint32_t rhs)
 
 void dodbm::db_value::operator=(int64_t rhs)
 {
-    uint64 = rhs;
-    m_type = type::uint64;
+    int64 = rhs;
+    m_type = type::int64;
 }
 
 void dodbm::db_value::operator=(uint64_t rhs)
