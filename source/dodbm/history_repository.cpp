@@ -19,9 +19,13 @@ bool dodbm::history_repository::exists(connection* connection, const sql_generat
             << " FROM "
             << helper.delimit_identifier("information_schema", "tables")
             << " WHERE "
-            << "table_schema = " << helper.delimit_identifier(connection->get_schema_name())
+            << helper.delimit_identifier("table_schema")
+            << " = "
+            << helper.escape_literal(connection->get_schema_name())
             << " AND "
-            << "table_name = " << helper.delimit_identifier(get_table_name())
+            << helper.delimit_identifier("table_name")
+            << " = "
+            << helper.escape_literal(get_table_name())
             << " LIMIT 1";
 
     auto query_result = connection->execute_query(command.get_text());
@@ -52,6 +56,8 @@ void dodbm::history_repository::create(connection* connection, const sql_generat
 
     auto command = generator.generate(*reinterpret_cast<dodbm::operation*>(operation.get()), helper);
 
+    connection->start_transaction();
+
     try
     {
         connection->execute_non_query(command.get_text(), command.get_parameters());
@@ -79,7 +85,7 @@ const std::string dodbm::history_repository::get_last_applied_migration(connecti
     auto query_result = connection->execute_query(command.get_text());
     if (!query_result.empty())
     {
-        return query_result.first().get("name").get_string();
+        return query_result.first().get(get_id_column_name()).get_string();
     }
 
     return "";
