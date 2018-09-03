@@ -13,12 +13,12 @@ namespace dodbm
 {
     namespace builders
     {
-        template<typename T, typename Operation>
+        template<typename Builder, typename Operation>
         class column : public builders::operation<Operation>
-            , public helpers::has_collation<T>
-            , public helpers::has_comment<T>
-            , public helpers::has_schema<T>
-            , public helpers::has_table<T>
+            , public helpers::has_collation<Builder>
+            , public helpers::has_comment<Builder>
+            , public helpers::has_schema<Builder>
+            , public helpers::has_table<Builder>
         {
         public:
 
@@ -26,93 +26,100 @@ namespace dodbm
 
             using base_t::operation;
 
-            const T& max_length(uint64_t max_length)
+            const Builder& max_length(uint64_t max_length) const
             {
                 base_t::m_operation->set_max_length(max_length);
-                return *reinterpret_cast<const T*>(this);
+                return *reinterpret_cast<const Builder*>(this);
             }
 
-            const T& decimals(uint8_t decimals)
+            const Builder& decimals(uint8_t decimals) const
             {
                 base_t::m_operation->set_decimals(decimals);
-                return *reinterpret_cast<const T*>(this);
+                return *reinterpret_cast<const Builder*>(this);
             }
 
-            const T& values(std::vector<std::string> values) const
+            const Builder& values(std::vector<std::string> values) const
             {
                 base_t::m_operation->set_values(std::move(values));
-                return *reinterpret_cast<const T*>(this);
+                return *reinterpret_cast<const Builder*>(this);
             }
 
-            const T& nullable() const
+            template<typename T>
+            const Builder& default_value(T value) const
+            {
+                base_t::m_operation->set_default_value(value);
+                return *reinterpret_cast<const Builder*>(this);
+            }
+
+            const Builder& nullable() const
             {
                 base_t::m_operation->set_nullable(true);
-                return *reinterpret_cast<const T*>(this);
+                return *reinterpret_cast<const Builder*>(this);
             }
 
-            const T& not_nullable() const
+            const Builder& not_nullable() const
             {
                 base_t::m_operation->set_nullable(false);
-                return *reinterpret_cast<const T*>(this);
+                return *reinterpret_cast<const Builder*>(this);
             }
 
-            const T& auto_incremented() const
+            const Builder& auto_incremented() const
             {
                 base_t::m_operation->set_auto_incremented(true);
-                return *reinterpret_cast<const T*>(this);
+                return *reinterpret_cast<const Builder*>(this);
             }
 
-            const T& not_auto_incremented() const
+            const Builder& not_auto_incremented() const
             {
                 base_t::m_operation->set_auto_incremented(false);
-                return *reinterpret_cast<const T*>(this);
+                return *reinterpret_cast<const Builder*>(this);
             }
 
-            const T& move_first() const
+            const Builder& move_first() const
             {
                 base_t::m_operation->set_move_first();
-                return *reinterpret_cast<const T*>(this);
+                return *reinterpret_cast<const Builder*>(this);
             }
 
-            const T& move_after(const std::string& column_name) const
+            const Builder& move_after(const std::string& column_name) const
             {
                 base_t::m_operation->set_move_after(column_name);
-                return *reinterpret_cast<const T*>(this);
+                return *reinterpret_cast<const Builder*>(this);
             }
 
             // Attributes.
 
-            const T& no_attribute() const
+            const Builder& no_attribute() const
             {
                 return attribute(dodbm::column_attribute::none);
             }
 
-            const T& binary() const
+            const Builder& binary() const
             {
                 return attribute(dodbm::column_attribute::binary);
             }
 
-            const T& on_update_current_timestamp() const
+            const Builder& on_update_current_timestamp() const
             {
                 return attribute(dodbm::column_attribute::on_update_current_timestamp);
             }
 
-            const T& unsigned_normal() const
+            const Builder& unsigned_normal() const
             {
                 return attribute(dodbm::column_attribute::unsigned_normal);
             }
 
-            const T& unsigned_zerofill() const
+            const Builder& unsigned_zerofill() const
             {
                 return attribute(dodbm::column_attribute::unsigned_zerofill);
             }
 
         private:
 
-            const T& attribute(dodbm::column_attribute attribute) const
+            const Builder& attribute(dodbm::column_attribute attribute) const
             {
                 base_t::m_operation->set_attribute(attribute);
-                return *reinterpret_cast<const T*>(this);
+                return *reinterpret_cast<const Builder*>(this);
             }
         };
     }

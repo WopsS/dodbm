@@ -567,7 +567,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::custom_sql& oper
 }
 
 void dodbm::sql_generator::generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& type, size_t max_length, uint8_t decimals,
-                                           const std::vector<std::string>& values, const std::string& default_value, const collation& collation, const dodbm::column_attribute attribute,
+                                           const std::vector<std::string>& values, const db_value& default_value, const collation& collation, const dodbm::column_attribute attribute,
                                            bool is_nullable, bool is_auto_incremented, const std::string& comment, bool move_first, const std::string& move_after) const
 {
     if (type.empty())
@@ -648,9 +648,74 @@ void dodbm::sql_generator::generate_column(command& command, const sql_generator
         command << " NOT NULL";
     }
 
-    if (!default_value.empty())
+    if (!default_value.is_null())
     {
-        command << " DEFAULT " << helper.escape_literal(default_value);
+        command << " DEFAULT ";
+
+        using type = dodbm::db_value::type;
+        switch (default_value.get_type())
+        {
+            case type::boolean:
+            {
+                command << default_value.get_boolean();
+                break;
+            }
+            case type::int8:
+            {
+                command << default_value.get_int8();
+                break;
+            }
+            case type::uint8:
+            {
+                command << default_value.get_uint8();
+                break;
+            }
+            case type::int16:
+            {
+                command << default_value.get_int16();
+                break;
+            }
+            case type::uint16:
+            {
+                command << default_value.get_uint16();
+                break;
+            }
+            case type::int32:
+            {
+                command << default_value.get_int32();
+                break;
+            }
+            case type::uint32:
+            {
+                command << default_value.get_uint32();
+                break;
+            }
+            case type::int64:
+            {
+                command << default_value.get_int64();
+                break;
+            }
+            case type::uint64:
+            {
+                command << default_value.get_uint64();
+                break;
+            }
+            case type::float_number:
+            {
+                command << default_value.get_float();
+                break;
+            }
+            case type::double_number:
+            {
+                command << default_value.get_double();
+                break;
+            }
+            default:
+            {
+                command << helper.escape_literal(default_value.get_string());
+                break;
+            }
+        }
     }
 
     if (is_auto_incremented)

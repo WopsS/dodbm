@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <dodbm/db_value.hpp>
+
 #include <dodbm/operations/helpers/has_collation.hpp>
 #include <dodbm/operations/helpers/has_comment.hpp>
 #include <dodbm/operations/helpers/has_required_name.hpp>
@@ -55,9 +57,9 @@ namespace dodbm
                 const std::vector<std::string>& get_values() const;
 
                 void set_default_value(default_value value);
-                void set_default_value(const std::string& value);
+                void set_default_value(db_value value);
 
-                const std::string& get_default_value() const;
+                const db_value& get_default_value() const;
 
                 void set_attribute(attribute attribute);
                 attribute get_attribute() const;
@@ -82,7 +84,7 @@ namespace dodbm
                 uint8_t m_decimals;
                 std::vector<std::string> m_values;
 
-                std::string m_default_value;
+                db_value m_default_value;
                 attribute m_attribute;
                 bool m_is_nullable;
                 bool m_is_auto_incremented;

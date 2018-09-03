@@ -61,8 +61,8 @@ namespace dodbm
 
         ~db_value();
 
-        db_value& operator=(const db_value&) = delete;
-        db_value& operator=(db_value&&) = delete;
+        db_value& operator=(const db_value& other);
+        db_value& operator=(db_value&& other);
 
         void operator=(bool rhs);
 
@@ -132,6 +132,9 @@ namespace dodbm
         void* get_union_ptr();
 
     private:
+
+        void handle_copy(const db_value& other);
+        void handle_move(db_value&& other);
 
         union
         {

@@ -90,7 +90,7 @@ namespace dodbm
         virtual command generate(const operations::custom_sql& operation, const sql_generator_helper& helper) const;
 
         virtual void generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& type, size_t max_length, uint8_t decimals,
-                                     const std::vector<std::string>& values, const std::string& default_value, const collation& collation, const dodbm::column_attribute attribute,
+                                     const std::vector<std::string>& values, const db_value& default_value, const collation& collation, const dodbm::column_attribute attribute,
                                      bool is_nullable, bool is_auto_incremented, const std::string& comment, bool move_first = false, const std::string& move_after = "") const;
 
         virtual void generate_column_assignment(command& command, const sql_generator_helper& helper, const std::string& name, const db_value& value) const;

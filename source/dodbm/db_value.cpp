@@ -92,154 +92,12 @@ dodbm::db_value::db_value(const std::string& value)
 
 dodbm::db_value::db_value(const db_value& other)
 {
-    m_type = other.m_type;
-    switch (m_type)
-    {
-        case type::null:
-        {
-            break;
-        }
-        case type::boolean:
-        {
-            b = other.b;
-            break;
-        }
-        case type::int8:
-        {
-            int8 = other.int8;
-            break;
-        }
-        case type::uint8:
-        {
-            uint8 = other.uint8;
-            break;
-        }
-        case type::int16:
-        {
-            int16 = other.int16;
-            break;
-        }
-        case type::uint16:
-        {
-            uint16 = other.uint16;
-            break;
-        }
-        case type::int32:
-        {
-            int32 = other.int32;
-            break;
-        }
-        case type::uint32:
-        {
-            uint32 = other.uint32;
-            break;
-        }
-        case type::int64:
-        {
-            int64 = other.int64;
-            break;
-        }
-        case type::uint64:
-        {
-            uint64 = other.uint64;
-            break;
-        }
-        case type::float_number:
-        {
-            f = other.f;
-            break;
-        }
-        case type::double_number:
-        {
-            d = other.d;
-            break;
-        }
-        case type::string:
-        {
-            new (&string) auto(other.string);
-            break;
-        }
-        default:
-        {
-            throw dodbm::exception("Unhandled DB value type (" + std::to_string(static_cast<uint32_t>(m_type)) + ")");
-        }
-    }
+    handle_copy(other);
 }
 
 dodbm::db_value::db_value(db_value&& other)
 {
-    m_type = other.m_type;
-    switch (m_type)
-    {
-        case type::null:
-        {
-            break;
-        }
-        case type::boolean:
-        {
-            b = other.b;
-            break;
-        }
-        case type::int8:
-        {
-            int8 = other.int8;
-            break;
-        }
-        case type::uint8:
-        {
-            uint8 = other.uint8;
-            break;
-        }
-        case type::int16:
-        {
-            int16 = other.int16;
-            break;
-        }
-        case type::uint16:
-        {
-            uint16 = other.uint16;
-            break;
-        }
-        case type::int32:
-        {
-            int32 = other.int32;
-            break;
-        }
-        case type::uint32:
-        {
-            uint32 = other.uint32;
-            break;
-        }
-        case type::int64:
-        {
-            int64 = other.int64;
-            break;
-        }
-        case type::uint64:
-        {
-            uint64 = other.uint64;
-            break;
-        }
-        case type::float_number:
-        {
-            f = other.f;
-            break;
-        }
-        case type::double_number:
-        {
-            d = other.d;
-            break;
-        }
-        case type::string:
-        {
-            new (&string) auto(std::move(other.string));
-            break;
-        }
-        default:
-        {
-            throw dodbm::exception("Unhandled DB value type (" + std::to_string(static_cast<uint32_t>(m_type)) + ")");
-        }
-    }
+    handle_move(std::move(other));
 }
 
 dodbm::db_value::~db_value()
@@ -252,6 +110,18 @@ dodbm::db_value::~db_value()
             break;
         }
     }
+}
+
+dodbm::db_value& dodbm::db_value::operator=(const db_value& other)
+{
+    handle_copy(other);
+    return *this;
+}
+
+dodbm::db_value& dodbm::db_value::operator=(db_value&& other)
+{
+    handle_move(std::move(other));
+    return *this;
 }
 
 void dodbm::db_value::operator=(bool rhs)
@@ -499,4 +369,159 @@ void dodbm::db_value::resize(std::size_t new_size)
 void* dodbm::db_value::get_union_ptr()
 {
     return reinterpret_cast<void*>(&b);
+}
+
+void dodbm::db_value::handle_copy(const db_value& other)
+{
+    if (this != &other)
+    {
+        m_type = other.m_type;
+        switch (m_type)
+        {
+            case type::null:
+            {
+                break;
+            }
+            case type::boolean:
+            {
+                b = other.b;
+                break;
+            }
+            case type::int8:
+            {
+                int8 = other.int8;
+                break;
+            }
+            case type::uint8:
+            {
+                uint8 = other.uint8;
+                break;
+            }
+            case type::int16:
+            {
+                int16 = other.int16;
+                break;
+            }
+            case type::uint16:
+            {
+                uint16 = other.uint16;
+                break;
+            }
+            case type::int32:
+            {
+                int32 = other.int32;
+                break;
+            }
+            case type::uint32:
+            {
+                uint32 = other.uint32;
+                break;
+            }
+            case type::int64:
+            {
+                int64 = other.int64;
+                break;
+            }
+            case type::uint64:
+            {
+                uint64 = other.uint64;
+                break;
+            }
+            case type::float_number:
+            {
+                f = other.f;
+                break;
+            }
+            case type::double_number:
+            {
+                d = other.d;
+                break;
+            }
+            case type::string:
+            {
+                new (&string) auto(other.string);
+                break;
+            }
+            default:
+            {
+                throw dodbm::exception("Unhandled DB value type (" + std::to_string(static_cast<uint32_t>(m_type)) + ")");
+            }
+        }
+    }
+}
+
+void dodbm::db_value::handle_move(db_value&& other)
+{
+    m_type = other.m_type;
+    switch (m_type)
+    {
+        case type::null:
+        {
+            break;
+        }
+        case type::boolean:
+        {
+            b = other.b;
+            break;
+        }
+        case type::int8:
+        {
+            int8 = other.int8;
+            break;
+        }
+        case type::uint8:
+        {
+            uint8 = other.uint8;
+            break;
+        }
+        case type::int16:
+        {
+            int16 = other.int16;
+            break;
+        }
+        case type::uint16:
+        {
+            uint16 = other.uint16;
+            break;
+        }
+        case type::int32:
+        {
+            int32 = other.int32;
+            break;
+        }
+        case type::uint32:
+        {
+            uint32 = other.uint32;
+            break;
+        }
+        case type::int64:
+        {
+            int64 = other.int64;
+            break;
+        }
+        case type::uint64:
+        {
+            uint64 = other.uint64;
+            break;
+        }
+        case type::float_number:
+        {
+            f = other.f;
+            break;
+        }
+        case type::double_number:
+        {
+            d = other.d;
+            break;
+        }
+        case type::string:
+        {
+            new (&string) auto(std::move(other.string));
+            break;
+        }
+        default:
+        {
+            throw dodbm::exception("Unhandled DB value type (" + std::to_string(static_cast<uint32_t>(m_type)) + ")");
+        }
+    }
 }

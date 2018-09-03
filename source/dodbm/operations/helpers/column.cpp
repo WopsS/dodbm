@@ -63,12 +63,12 @@ void dodbm::operations::helpers::column::set_default_value(default_value value)
     }
 }
 
-void dodbm::operations::helpers::column::set_default_value(const std::string& value)
+void dodbm::operations::helpers::column::set_default_value(db_value value)
 {
-    m_default_value = value;
+    m_default_value = std::move(value);
 }
 
-const std::string& dodbm::operations::helpers::column::get_default_value() const
+const dodbm::db_value& dodbm::operations::helpers::column::get_default_value() const
 {
     return m_default_value;
 }
