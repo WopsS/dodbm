@@ -32,7 +32,8 @@ install:
   - cmd: msiexec /i mariadb-connector-c-3.0.6-win64.msi /quiet /qn
   - ps: Remove-Item mariadb-connector-c-3.0.6-win64.msi
 
-  - ps: $env:Path += ";C:\Program Files\MySql\MySQL Server 5.7\bin"
+  - ps: $env:PATH += ";C:\Program Files\MariaDB\MariaDB Connector C 64-bit\lib"
+  - ps: $env:PATH += ";C:\Program Files\MySql\MySQL Server 5.7\bin"
 
 before_build:
   - ps: cd $env:premake_dir
