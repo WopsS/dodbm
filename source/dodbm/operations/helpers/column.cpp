@@ -3,6 +3,7 @@
 dodbm::operations::helpers::column::column(const std::string& name)
     : has_required_name(name)
     , m_max_length(0)
+    , m_decimals(0)
     , m_attribute(attribute::none)
     , m_is_nullable(false)
     , m_is_auto_incremented(false)

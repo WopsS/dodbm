@@ -77,9 +77,9 @@ namespace dodbm
             private:
 
                 std::string m_column_type;
-                uint8_t m_decimals;
 
                 uint64_t m_max_length;
+                uint8_t m_decimals;
                 std::vector<std::string> m_values;
 
                 std::string m_default_value;
