@@ -27,9 +27,9 @@ before_script:
   - wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha12/premake-5.0.0-alpha12-linux.tar.gz
   - tar xzf premake-*-linux.tar.gz -C ${PREMAKE_DIR}
 
-  - mysql -e "CREATE USER 'dodbm'@'127.0.0.1' IDENTIFIED BY 'do';" --user=root
+  - mysql -e "CREATE USER 'dodbm'@'%' IDENTIFIED BY 'do';" --user=root
   - mysql -e "CREATE DATABASE dodbm;" --user=root
-  - mysql -e "GRANT ALL PRIVILEGES ON dodbm.* TO 'dodbm'@'127.0.0.1';" --user=root
+  - mysql -e "GRANT ALL PRIVILEGES ON dodbm.* TO 'dodbm'@'%';" --user=root
 
 script:
   - cd ${PREMAKE_DIR}
