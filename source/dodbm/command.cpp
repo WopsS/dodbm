@@ -1,14 +1,20 @@
 #include <dodbm/command.hpp>
 
-dodbm::command& dodbm::command::operator<<(const std::string& rhs)
+dodbm::command& dodbm::command::operator<<(char* rhs)
 {
     m_text += rhs;
     return *this;
 }
 
-dodbm::command& dodbm::command::operator<<(uint64_t rhs)
+dodbm::command& dodbm::command::operator<<(const char* rhs)
 {
-    m_text += std::to_string(rhs);
+    m_text += rhs;
+    return *this;
+}
+
+dodbm::command& dodbm::command::operator<<(const std::string& rhs)
+{
+    m_text += rhs;
     return *this;
 }
 
