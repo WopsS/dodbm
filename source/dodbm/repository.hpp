@@ -39,6 +39,12 @@ namespace dodbm
             rollback_to(dodbm::name_of<T>());
         }
 
+        template<typename Collation>
+        void set_default_charset()
+        {
+            collation::set_default(Collation::name, Collation::charset);
+        }
+
         void migrate();
 
     private:
