@@ -55,8 +55,8 @@ namespace
 
 TEST_CASE("Repository")
 {
-    std::unique_ptr<mocks::provider> provider(new mocks::provider());
-    dodbm::repository repository(std::move(provider));
+    std::shared_ptr<mocks::provider> provider(new mocks::provider());
+    dodbm::repository repository(provider);
 
     repository.add<m20180829162057_mock_1>();
 

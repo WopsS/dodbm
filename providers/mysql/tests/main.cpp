@@ -14,8 +14,8 @@ TEST_CASE("MySQL provider")
     config.user = "dodbm";
     config.password = "do";
 
-    std::unique_ptr<dodbm::mysql::provider> provider(new dodbm::mysql::provider(config));
-    dodbm::repository repository(std::move(provider));
+    std::shared_ptr<dodbm::mysql::provider> provider(new dodbm::mysql::provider(config));
+    dodbm::repository repository(provider);
 
     repository.add<mocks::m20180903205850_mock>();
 

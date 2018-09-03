@@ -3,7 +3,7 @@
 #include <dodbm/command_executor.hpp>
 #include <dodbm/exception.hpp>
 
-dodbm::repository::repository(std::unique_ptr<provider> provider)
+dodbm::repository::repository(std::shared_ptr<provider> provider)
     : m_provider(std::move(provider))
 {
     auto connection = m_provider->get_connection();
