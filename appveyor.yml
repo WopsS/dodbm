@@ -39,9 +39,9 @@ before_build:
   - ps: ./generate_vs_projects.bat
 
 before_test:
-  - ps: mysql -e "CREATE USER 'dodbm'@'127.0.0.1' IDENTIFIED BY 'do';" --user=root --password=Password12!
-  - ps: mysql -e "CREATE DATABASE dodbm;" --user=root --password=Password12!
-  - ps: mysql -e "GRANT ALL PRIVILEGES ON `dodbm`.* TO 'dodbm'@'127.0.0.1';" --user=root --password=Password12!
+  - cmd: mysql -e "CREATE USER 'dodbm'@'127.0.0.1' IDENTIFIED BY 'do';" --user=root --password=Password12!
+  - cmd: mysql -e "CREATE DATABASE dodbm;" --user=root --password=Password12!
+  - cmd: mysql -e "GRANT ALL PRIVILEGES ON dodbm.* TO 'dodbm'@'127.0.0.1';" --user=root --password=Password12!
 
 test_script:
   - ps: cd "$env:scripts_dir"
