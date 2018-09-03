@@ -29,6 +29,6 @@ project("mysql-provider-tests")
     links({ getmysqllib() })
 
     files({  "**.cpp", "**.hpp" })
-    links({ "dodbm", "mysql-provider" })
+    links({ "mysql-provider", "dodbm" })
 
     vpaths({ ["*"] = "**.*" })
