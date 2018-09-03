@@ -57,8 +57,33 @@ namespace dodbm
         db_value(const std::string& value);
 
         db_value(const db_value& other);
+        db_value(db_value&& other);
 
         ~db_value();
+
+        db_value& operator=(const db_value&) = delete;
+        db_value& operator=(db_value&&) = delete;
+
+        void operator=(bool rhs);
+
+        void operator=(int8_t rhs);
+        void operator=(uint8_t rhs);
+
+        void operator=(int16_t rhs);
+        void operator=(uint16_t rhs);
+
+        void operator=(int32_t rhs);
+        void operator=(uint32_t rhs);
+
+        void operator=(int64_t rhs);
+        void operator=(uint64_t rhs);
+
+        void operator=(float rhs);
+        void operator=(double rhs);
+
+        void operator=(char* rhs);
+        void operator=(const char* rhs);
+        void operator=(const std::string& rhs);
 
         type get_type() const;
 
@@ -100,10 +125,18 @@ namespace dodbm
         const std::string get_string() const;
         bool is_string() const;
 
+        const char* data() const;
+        std::size_t size() const;
+        void resize(std::size_t new_size);
+
+        void* get_union_ptr();
+
     private:
 
         union
         {
+            char _initialization[sizeof(std::string)]{};
+
             bool b;
 
             int8_t int8;
