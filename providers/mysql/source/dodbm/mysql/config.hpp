@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <string>
 
 namespace dodbm
@@ -27,7 +28,9 @@ namespace dodbm
             ssl_config ssl;
             std::string charset = "utf8";
 
-            bool has_ssl()
+            std::function<void(const std::string&)> debug;
+
+            bool has_ssl() const
             {
                 return !ssl.key.empty() && !ssl.cert.empty();
             }

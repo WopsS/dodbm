@@ -1,7 +1,10 @@
 #pragma once
 
-#include <dodbm/mysql/config.hpp>
+#include <memory>
+
 #include <dodbm/provider.hpp>
+
+#include <dodbm/mysql/connection.hpp>
 
 namespace dodbm
 {
@@ -12,7 +15,13 @@ namespace dodbm
         public:
 
             provider(const config& config);
-            ~provider();
+            ~provider() = default;
+
+            dodbm::connection* get_connection() const final;
+
+        private:
+
+            std::unique_ptr<mysql::connection> m_connection;
         };
     }
 }
