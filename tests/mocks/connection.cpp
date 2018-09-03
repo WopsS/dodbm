@@ -21,7 +21,7 @@ dodbm::db_result mocks::connection::execute_query(const std::string& text, const
     return dodbm::db_result({});
 }
 
-std::string mocks::connection::get_schema_name()
+std::string mocks::connection::get_schema_name() const
 {
     return "mock";
 }
