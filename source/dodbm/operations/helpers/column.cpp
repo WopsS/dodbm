@@ -30,6 +30,16 @@ uint64_t dodbm::operations::helpers::column::get_max_length() const
     return m_max_length;
 }
 
+void dodbm::operations::helpers::column::set_decimals(uint8_t decimals)
+{
+    m_decimals = decimals;
+}
+
+uint8_t dodbm::operations::helpers::column::get_decimals() const
+{
+    return m_decimals;
+}
+
 void dodbm::operations::helpers::column::set_values(std::vector<std::string> values)
 {
     m_values = std::move(values);

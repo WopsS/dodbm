@@ -48,6 +48,9 @@ namespace dodbm
                 void set_max_length(uint64_t max_length);
                 uint64_t get_max_length() const;
 
+                void set_decimals(uint8_t decimals);
+                uint8_t get_decimals() const;
+
                 void set_values(std::vector<std::string> values);
                 const std::vector<std::string>& get_values() const;
 
@@ -74,6 +77,7 @@ namespace dodbm
             private:
 
                 std::string m_column_type;
+                uint8_t m_decimals;
 
                 uint64_t m_max_length;
                 std::vector<std::string> m_values;

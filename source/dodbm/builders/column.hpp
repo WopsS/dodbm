@@ -32,6 +32,12 @@ namespace dodbm
                 return *reinterpret_cast<const T*>(this);
             }
 
+            const T& decimals(uint8_t decimals)
+            {
+                base_t::m_operation->set_decimals(decimals);
+                return *reinterpret_cast<const T*>(this);
+            }
+
             const T& values(std::vector<std::string> values) const
             {
                 base_t::m_operation->set_values(std::move(values));

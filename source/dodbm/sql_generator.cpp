@@ -234,8 +234,8 @@ dodbm::command dodbm::sql_generator::generate(const operations::create_table& op
         }
 
         auto column = *it;
-        generate_column(result, helper, column->get_name(), column->get_column_type(), column->get_max_length(), column->get_values(), column->get_default_value(), column->get_collation(),
-                        column->get_attribute(), column->is_nullable(), column->is_auto_incremented(), column->get_comment());
+        generate_column(result, helper, column->get_name(), column->get_column_type(), column->get_max_length(), column->get_decimals(), column->get_values(), column->get_default_value(),
+                        column->get_collation(), column->get_attribute(), column->is_nullable(), column->is_auto_incremented(), column->get_comment());
     }
 
     auto primary_key = operation.get_primary_key();
@@ -314,8 +314,9 @@ dodbm::command dodbm::sql_generator::generate(const operations::add_column& oper
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " ADD COLUMN ";
 
-    generate_column(result, helper, operation.get_name(), operation.get_column_type(), operation.get_max_length(), operation.get_values(), operation.get_default_value(), operation.get_collation(),
-                    operation.get_attribute(), operation.is_nullable(), operation.is_auto_incremented(), operation.get_comment(), operation.get_move_first(), operation.get_move_after());
+    generate_column(result, helper, operation.get_name(), operation.get_column_type(), operation.get_max_length(), operation.get_decimals(), operation.get_values(), operation.get_default_value(),
+                    operation.get_collation(), operation.get_attribute(), operation.is_nullable(), operation.is_auto_incremented(), operation.get_comment(), operation.get_move_first(),
+                    operation.get_move_after());
 
     return result;
 }
@@ -327,8 +328,9 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_column& op
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " MODIFY COLUMN ";
 
-    generate_column(result, helper, operation.get_name(), operation.get_column_type(), operation.get_max_length(), operation.get_values(), operation.get_default_value(), operation.get_collation(),
-                    operation.get_attribute(), operation.is_nullable(), operation.is_auto_incremented(), operation.get_comment(), operation.get_move_first(), operation.get_move_after());
+    generate_column(result, helper, operation.get_name(), operation.get_column_type(), operation.get_max_length(), operation.get_decimals(), operation.get_values(), operation.get_default_value(),
+                    operation.get_collation(), operation.get_attribute(), operation.is_nullable(), operation.is_auto_incremented(), operation.get_comment(), operation.get_move_first(),
+                    operation.get_move_after());
 
     return result;
 }
@@ -564,7 +566,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::custom_sql& oper
     return result;
 }
 
-void dodbm::sql_generator::generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& type, const size_t max_length,
+void dodbm::sql_generator::generate_column(command& command, const sql_generator_helper& helper, const std::string& name, const std::string& type, size_t max_length, uint8_t decimals,
                                            const std::vector<std::string>& values, const std::string& default_value, const collation& collation, const dodbm::column_attribute attribute,
                                            bool is_nullable, bool is_auto_incremented, const std::string& comment, bool move_first, const std::string& move_after) const
 {
@@ -596,7 +598,14 @@ void dodbm::sql_generator::generate_column(command& command, const sql_generator
     }
     else if (max_length > 0)
     {
-        command << "(" << max_length << ")";
+        command << "(" << max_length;
+        
+        if (decimals > 0)
+        {
+            command << ", " << static_cast<uint16_t>(decimals);
+        }
+
+        command << ")";
     }
 
     // Append the others.
