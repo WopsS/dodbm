@@ -40,7 +40,7 @@ void dodbm::mysql::statement::bind(const std::vector<db_value>& parameters)
 
     if (param_count > 0)
     {
-        // Store a list of raw binds to be used for "mysql_stmt_bind_param".
+        // Store a list of raw binds to be used when calling "mysql_stmt_bind_param".
         std::vector<MYSQL_BIND*> raw_binds;
 
         m_binds.reserve(param_count);
@@ -101,6 +101,7 @@ dodbm::db_result dodbm::mysql::statement::query()
     auto field_count = mysql_stmt_field_count(m_stmt);
     if (field_count > 0)
     {
+        // Store a list of raw binds to be used when calling "mysql_stmt_bind_result".
         std::vector<MYSQL_BIND*> raw_binds;
 
         result_metadata result(m_stmt);
