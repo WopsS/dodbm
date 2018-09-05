@@ -37,6 +37,11 @@ namespace dodbm
                 static constexpr auto name = "INT";
             };
 
+            struct bigint
+            {
+                static constexpr auto name = "BIGINT";
+            };
+
             struct decimal
             {
                 static constexpr auto name = "DECIMAL";
