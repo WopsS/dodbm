@@ -40,7 +40,7 @@ namespace dodbm
         }
 
         template<typename Collation>
-        void set_default_charset()
+        void set_default_collation()
         {
             collation::set_default(Collation::name, Collation::charset);
         }
