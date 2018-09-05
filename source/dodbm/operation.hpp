@@ -49,5 +49,7 @@ namespace dodbm
         virtual ~operation() = default;
 
         virtual type get_type() const = 0;
+
+        virtual bool is_allowed_in_prepared_statements() const;
     };
 }

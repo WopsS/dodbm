@@ -21,7 +21,8 @@ namespace dodbm
             void commit() final;
             void rollback() final;
 
-            void execute_non_query(const std::string& text, const std::vector<db_value>& parameters = {}) final;
+            void execute_non_query(const std::string& text) final;
+            void execute_non_query(const std::string& text, const std::vector<db_value>& parameters) final;
             db_result execute_query(const std::string& text, const std::vector<db_value>& parameters = {}) final;
 
             std::string get_schema_name() const final;

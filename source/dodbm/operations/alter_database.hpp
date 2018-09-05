@@ -18,6 +18,8 @@ namespace dodbm
             using has_required_name::has_required_name;
 
             type get_type() const final;
+
+            bool is_allowed_in_prepared_statements() const;
         };
     }
 }

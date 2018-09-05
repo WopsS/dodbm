@@ -12,7 +12,7 @@ namespace dodbm
     {
     public:
 
-        command() = default;
+        command(bool allowed_in_prepared_statements = true);
         ~command() = default;
 
         command& operator<<(char* rhs);
@@ -31,7 +31,11 @@ namespace dodbm
 
         const std::string& get_text() const;
 
+        bool is_allowed_in_prepared_statements() const;
+
     private:
+
+        bool m_allowed_in_prepared_statements;
 
         std::string m_text;
 

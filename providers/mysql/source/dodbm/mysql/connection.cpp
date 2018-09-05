@@ -104,6 +104,11 @@ void dodbm::mysql::connection::rollback()
     }
 }
 
+void dodbm::mysql::connection::execute_non_query(const std::string& text)
+{
+    mysql_real_query(m_mysql, text.c_str(), text.size());
+}
+
 void dodbm::mysql::connection::execute_non_query(const std::string& text, const std::vector<db_value>& parameters)
 {
     mysql::statement statement(m_mysql, text);

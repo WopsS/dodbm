@@ -1,5 +1,10 @@
 #include <dodbm/command.hpp>
 
+dodbm::command::command(bool allowed_in_prepared_statements)
+    : m_allowed_in_prepared_statements(allowed_in_prepared_statements)
+{
+}
+
 dodbm::command& dodbm::command::operator<<(char* rhs)
 {
     m_text += rhs;
@@ -31,4 +36,9 @@ const std::vector<dodbm::db_value>& dodbm::command::get_parameters() const
 const std::string& dodbm::command::get_text() const
 {
     return m_text;
+}
+
+bool dodbm::command::is_allowed_in_prepared_statements() const
+{
+    return m_allowed_in_prepared_statements;
 }
