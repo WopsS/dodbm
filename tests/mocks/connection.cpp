@@ -12,6 +12,10 @@ void mocks::connection::rollback()
 {
 }
 
+void mocks::connection::execute_non_query(const std::string& text)
+{
+}
+
 void mocks::connection::execute_non_query(const std::string& text, const std::vector<dodbm::db_value>& parameters)
 {
 }
