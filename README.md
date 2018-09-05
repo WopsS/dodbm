@@ -27,3 +27,10 @@ A database migration library for C++ applications.
 3. Extract the content of **[PREMAKE 5](https://github.com/premake/premake-core/releases)** into **premake** directory.
 4. Go to the **premake** directory and run **generate_gmake_projects.sh**.
 5. Build the projects by running the `make` command into **premake/projects** directory.
+
+## How to use it
+
+The documentation is available at [docs](/docs), but the most important parts are:
+
+* [Getting started](/docs/tutorial.md)
+* [Writing a provider](/docs/writing-a-provider.md)
