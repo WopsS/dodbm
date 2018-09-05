@@ -9,7 +9,7 @@ project("mysql-provider")
     includedirs(
     {
         ".",
-        sourcepath(basepath)
+        "../../../source"
     })
 
     if findmysqlheaderdir ~= nil then

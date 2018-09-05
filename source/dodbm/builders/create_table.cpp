@@ -5,7 +5,7 @@ const dodbm::builders::create_table& dodbm::builders::create_table::columns(std:
     columns_builder builder;
     func(builder);
 
-    m_operation->set_columns(std::move(builder.columns));
+    m_operation->set_columns(std::move(builder.columns_));
 
     return *this;
 }

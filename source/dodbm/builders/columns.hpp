@@ -17,7 +17,7 @@ namespace dodbm
                 std::shared_ptr<operations::add_column> operation(new operations::add_column(name));
                 operation->set_column_type(T::name);
 
-                columns.emplace_back(operation);
+                columns_.emplace_back(operation);
                 return builders::add_column(operation);
             }
 
@@ -25,7 +25,7 @@ namespace dodbm
 
             friend class create_table;
 
-            std::vector<std::shared_ptr<operations::add_column>> columns;
+            std::vector<std::shared_ptr<operations::add_column>> columns_;
         };
     }
 
