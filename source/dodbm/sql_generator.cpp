@@ -160,7 +160,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_database& 
 
     const auto& charset = collation.get_charset();
 
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER DATABASE "
            << helper.delimit_identifier(operation.get_name());
 
@@ -175,7 +175,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_database& 
 
 dodbm::command dodbm::sql_generator::generate(const operations::drop_schema& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "DROP SCHEMA "
            << helper.delimit_identifier(operation.get_name());
 
@@ -184,7 +184,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_schema& ope
 
 dodbm::command dodbm::sql_generator::generate(const operations::ensure_schema& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "CREATE SCHEMA IF NOT EXISTS "
            << helper.delimit_identifier(operation.get_name());
 
@@ -200,7 +200,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::ensure_schema& o
 
 dodbm::command dodbm::sql_generator::generate(const operations::alter_table& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_name());
 
@@ -220,7 +220,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_table& ope
 
 dodbm::command dodbm::sql_generator::generate(const operations::create_table& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "CREATE TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_name())
            << " (";
@@ -289,7 +289,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::create_table& op
 
 dodbm::command dodbm::sql_generator::generate(const operations::drop_table& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "DROP TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_name());
 
@@ -298,7 +298,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_table& oper
 
 dodbm::command dodbm::sql_generator::generate(const operations::rename_table& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "RENAME TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_name())
            << " TO "
@@ -309,7 +309,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::rename_table& op
 
 dodbm::command dodbm::sql_generator::generate(const operations::add_column& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " ADD COLUMN ";
@@ -323,7 +323,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::add_column& oper
 
 dodbm::command dodbm::sql_generator::generate(const operations::alter_column& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " MODIFY COLUMN ";
@@ -337,7 +337,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::alter_column& op
 
 dodbm::command dodbm::sql_generator::generate(const operations::drop_column& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " DROP COLUMN "
@@ -348,7 +348,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_column& ope
 
 dodbm::command dodbm::sql_generator::generate(const operations::rename_column& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " RENAME COLUMN "
@@ -361,7 +361,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::rename_column& o
 
 dodbm::command dodbm::sql_generator::generate(const operations::add_primary_key& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " ADD ";
@@ -373,7 +373,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::add_primary_key&
 
 dodbm::command dodbm::sql_generator::generate(const operations::drop_primary_key& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " DROP PRIMARY KEY";
@@ -383,7 +383,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_primary_key
 
 dodbm::command dodbm::sql_generator::generate(const operations::add_foreign_key& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " ADD ";
@@ -396,7 +396,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::add_foreign_key&
 
 dodbm::command dodbm::sql_generator::generate(const operations::drop_foreign_key& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " DROP FOREIGN KEY "
@@ -407,7 +407,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_foreign_key
 
 dodbm::command dodbm::sql_generator::generate(const operations::add_unique_constraint& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " ADD ";
@@ -419,7 +419,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::add_unique_const
 
 dodbm::command dodbm::sql_generator::generate(const operations::drop_unique_constraint& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " DROP CONSTRAINT "
@@ -430,7 +430,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_unique_cons
 
 dodbm::command dodbm::sql_generator::generate(const operations::create_index& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " ADD INDEX";
@@ -457,7 +457,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::create_index& op
 
 dodbm::command dodbm::sql_generator::generate(const operations::drop_index& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " DROP INDEX "
@@ -468,7 +468,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::drop_index& oper
 
 dodbm::command dodbm::sql_generator::generate(const operations::rename_index& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "ALTER TABLE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " RENAME INDEX "
@@ -481,7 +481,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::rename_index& op
 
 dodbm::command dodbm::sql_generator::generate(const operations::insert_data& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
 
     std::string columns;
     std::string values;
@@ -517,7 +517,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::insert_data& ope
 
 dodbm::command dodbm::sql_generator::generate(const operations::delete_data& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "DELETE FROM "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " ";
@@ -529,7 +529,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::delete_data& ope
 
 dodbm::command dodbm::sql_generator::generate(const operations::update_data& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << "UPDATE "
            << helper.delimit_identifier(operation.get_schema(), operation.get_table())
            << " SET ";
@@ -560,7 +560,7 @@ dodbm::command dodbm::sql_generator::generate(const operations::update_data& ope
 
 dodbm::command dodbm::sql_generator::generate(const operations::custom_sql& operation, const sql_generator_helper& helper) const
 {
-    command result;
+    command result(operation.is_allowed_in_prepared_statements());
     result << operation.get_sql();
 
     return result;
