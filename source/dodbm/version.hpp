@@ -8,22 +8,22 @@ namespace dodbm
     {
         constexpr const char* as_string()
         {
-            return "0.1.0";
+            return "1.0.0";
         }
 
         constexpr uint32_t as_int()
         {
-            return 100;
+            return 10000;
         }
 
         constexpr uint8_t get_major()
         {
-            return 0;
+            return 1;
         }
 
         constexpr uint8_t get_minor()
         {
-            return 1;
+            return 0;
         }
 
         constexpr uint8_t get_patch()

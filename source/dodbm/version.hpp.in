@@ -8,27 +8,27 @@ namespace dodbm
     {
         constexpr const char* as_string()
         {
-            return %as_string%;
+            return "@PROJECT_VERSION@";
         }
 
         constexpr uint32_t as_int()
         {
-            return %as_int%;
+            return @PROJECT_VERSION_INT@;
         }
 
         constexpr uint8_t get_major()
         {
-            return %major%;
+            return @PROJECT_VERSION_MAJOR@;
         }
 
         constexpr uint8_t get_minor()
         {
-            return %minor%;
+            return @PROJECT_VERSION_MINOR@;
         }
 
         constexpr uint8_t get_patch()
         {
-            return %patch%;
+            return @PROJECT_VERSION_PATCH@;
         }
     }
 }

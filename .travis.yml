@@ -14,7 +14,6 @@ addons:
 env:
   global:
     - BUILD_DIR=$TRAVIS_BUILD_DIR/build
-    - PREMAKE_DIR=$TRAVIS_BUILD_DIR/premake
     - SCRIPTS_DIR=$TRAVIS_BUILD_DIR/scripts
   matrix:
     - CONFIGURATION=Debug
@@ -24,19 +23,16 @@ git:
   depth: 1
 
 before_script:
-  - wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha12/premake-5.0.0-alpha12-linux.tar.gz
-  - tar xzf premake-*-linux.tar.gz -C ${PREMAKE_DIR}
-
   - mysql -e "CREATE USER 'dodbm'@'%' IDENTIFIED BY 'do';" --user=root
   - mysql -e "CREATE DATABASE dodbm;" --user=root
   - mysql -e "GRANT ALL PRIVILEGES ON dodbm.* TO 'dodbm'@'%';" --user=root
 
+  - mkdir build
+  - cd build
+  - cmake .. -DCMAKE_BUILD_TYPE=${CONFIGURATION}
+
 script:
-  - cd ${PREMAKE_DIR}
-  - chmod +x ./generate_gmake_projects.sh
-  - ./generate_gmake_projects.sh
-  - cd projects
-  - make config=${CONFIGURATION,,} CXX=g++-7
+  - cmake --build . --config ${CONFIGURATION}
   - cd ${SCRIPTS_DIR}
   - chmod +x ./run_tests.sh
   - ./run_tests.sh ${BUILD_DIR}/${CONFIGURATION,,}/bin

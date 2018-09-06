@@ -11,7 +11,6 @@ configuration:
 
 environment:
   bin_dir: $(APPVEYOR_BUILD_FOLDER)/build/$(configuration)/bin
-  premake_dir: $(APPVEYOR_BUILD_FOLDER)/premake
   scripts_dir: $(APPVEYOR_BUILD_FOLDER)/scripts
 
 platform:
@@ -25,8 +24,6 @@ services:
 
 install:
   - cmd: git submodule update --init --recursive
-  - ps: appveyor DownloadFile https://github.com/premake/premake-core/releases/download/v5.0.0-alpha12/premake-5.0.0-alpha12-windows.zip
-  - ps: 7z e premake-*-windows.zip -o"$env:premake_dir"
 
   - ps: appveyor DownloadFile https://downloads.mariadb.com/Connectors/c/connector-c-3.0.6/mariadb-connector-c-3.0.6-win64.msi
   - cmd: msiexec /i mariadb-connector-c-3.0.6-win64.msi /quiet /qn
@@ -36,8 +33,9 @@ install:
   - ps: $env:PATH += ";C:\Program Files\MySql\MySQL Server 5.7\bin"
 
 before_build:
-  - ps: cd $env:premake_dir
-  - ps: ./generate_vs_projects.bat
+  - ps: mkdir build
+  - ps: cd build
+  - ps: cmake .. -DCMAKE_BUILD_TYPE=${CONFIGURATION}
 
 before_test:
   - cmd: mysql -e "CREATE USER 'dodbm'@'%' IDENTIFIED BY 'do';" --user=root --password=Password12!

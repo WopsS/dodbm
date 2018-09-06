@@ -1,0 +1,6 @@
+file(GLOB files LIST_DIRECTORIES true "${CMAKE_CURRENT_SOURCE_DIR}/*")
+foreach(file ${files})
+    if(IS_DIRECTORY ${file})
+        add_subdirectory(${file})
+    endif()
+endforeach()
