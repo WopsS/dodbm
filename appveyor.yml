@@ -43,9 +43,6 @@ before_test:
   - cmd: mysql -e "CREATE DATABASE dodbm;" --user=root --password=Password12!
   - cmd: mysql -e "GRANT ALL PRIVILEGES ON dodbm.* TO 'dodbm'@'%';" --user=root --password=Password12!
 
-build_script:
-  - ps: cmake --build . --config $env:configuration
-
 test_script:
   - ps: cd "$env:scripts_dir"
   - ps: ./run_tests.ps1 $env:bin_dir
