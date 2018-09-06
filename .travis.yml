@@ -35,4 +35,4 @@ script:
   - cmake --build . --config ${CONFIGURATION}
   - cd ${SCRIPTS_DIR}
   - chmod +x ./run_tests.sh
-  - ./run_tests.sh ${BUILD_DIR}/${CONFIGURATION,,}/bin
+  - ./run_tests.sh ${BUILD_DIR}/bin

@@ -35,7 +35,7 @@ install:
 before_build:
   - ps: mkdir build
   - ps: cd build
-  - ps: cmake .. -DCMAKE_BUILD_TYPE=$env:configuration
+  - ps: cmake .. -DCMAKE_GENERATOR_PLATFORM=x64
 
 before_test:
   - cmd: mysql -e "CREATE USER 'dodbm'@'%' IDENTIFIED BY 'do';" --user=root --password=Password12!
