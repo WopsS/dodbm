@@ -10,7 +10,7 @@ A database migration library for C++ applications.
 ### Requirements
 
 * **[CMake](https://cmake.org/)**.
-* **[MariaDB Connector/C](https://downloads.mariadb.org/connector-c/+releases/)** or [MySQL Connector/C](https://dev.mysql.com/downloads/connector/c/).
+* **[MariaDB Connector/C](https://downloads.mariadb.org/connector-c/+releases/)** or **[MySQL Connector/C](https://dev.mysql.com/downloads/connector/c/)**.
 
 ### Windows
 
