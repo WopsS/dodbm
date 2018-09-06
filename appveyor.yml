@@ -29,6 +29,7 @@ install:
   - cmd: msiexec /i mariadb-connector-c-3.0.6-win64.msi /quiet /qn
   - ps: Remove-Item mariadb-connector-c-3.0.6-win64.msi
 
+  - ps: $env:PATH += ";C:\Program Files\MariaDB\MariaDB Connector C 64-bit\include"
   - ps: $env:PATH += ";C:\Program Files\MariaDB\MariaDB Connector C 64-bit\lib"
   - ps: $env:PATH += ";C:\Program Files\MySql\MySQL Server 5.7\bin"
 
@@ -41,6 +42,9 @@ before_test:
   - cmd: mysql -e "CREATE USER 'dodbm'@'%' IDENTIFIED BY 'do';" --user=root --password=Password12!
   - cmd: mysql -e "CREATE DATABASE dodbm;" --user=root --password=Password12!
   - cmd: mysql -e "GRANT ALL PRIVILEGES ON dodbm.* TO 'dodbm'@'%';" --user=root --password=Password12!
+
+build_script:
+  - ps: cmake --build . --config $env:configuration
 
 test_script:
   - ps: cd "$env:scripts_dir"
