@@ -29,7 +29,7 @@ before_script:
 
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=${CONFIGURATION}
+  - cmake .. -DCMAKE_BUILD_TYPE=${CONFIGURATION} -DCMAKE_CXX_COMPILER=g++-7
 
 script:
   - cmake --build . --config ${CONFIGURATION}
